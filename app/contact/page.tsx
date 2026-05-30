@@ -26,16 +26,16 @@ export default function ContactPage() {
           Get in Touch
         </div>
         <h1 className="font-display font-black text-4xl md:text-5xl mb-2">Contact Us</h1>
-        <p className="text-gray-500 max-w-xl">Have feedback, corrections, or questions about the Lagos State Government Directory? We would love to hear from you.</p>
+        <p className="text-gray-500 max-w-xl">Have feedback, corrections, or questions about the Alausa Directory? We would love to hear from you.</p>
       </div>
 
       <div className="grid md:grid-cols-5 gap-8">
         {/* Info panel */}
         <div className="md:col-span-2 space-y-4">
           {[
-            { icon: "🏛️", title: "Lagos State Government", body: "Secretariat, Alausa, Ikeja, Lagos State, Nigeria" },
+            { icon: "🏛️", title: "Alausa Directory", body: "Secretariat, Alausa, Ikeja, Lagos State, Nigeria" },
             { icon: "📞", title: "General Enquiries", body: "+234-1-7630000" },
-            { icon: "✉️", title: "Email", body: "info@lagosstate.gov.ng" },
+            { icon: "✉️", title: "Email", body: "contact@alausadirectory.com" },
             { icon: "🕐", title: "Office Hours", body: "Monday – Friday\n8:00 AM – 4:00 PM" },
           ].map((item) => (
             <div key={item.title} className="p-4 rounded-xl" style={{ background: "#fff", border: "2px solid #0D0D0D" }}>

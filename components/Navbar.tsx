@@ -21,7 +21,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full" style={{ background: "#F5C518", border: "2px solid #fff" }} />
           <span className="font-display text-white text-lg font-bold tracking-tight">
-            Lagos <span style={{ color: "#F5C518" }}>Directory</span>
+            Alausa <span style={{ color: "#F5C518" }}>Directory</span>
           </span>
         </Link>
 

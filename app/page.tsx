@@ -106,8 +106,8 @@ export default async function Home({
       <footer style={{ background: "#0D0D0D", borderTop: "4px solid #F5C518" }}>
         <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-display text-white text-lg font-bold">Lagos Directory</p>
-            <p className="text-gray-400 text-sm">Official government information portal</p>
+            <p className="font-display text-white text-lg font-bold">Alausa Directory</p>
+            <p className="text-gray-400 text-sm">government information portal</p>
           </div>
           <div className="flex gap-4 text-sm">
             {["/ministries", "/agencies", "/parastatals", "/contact"].map((href) => (
@@ -116,7 +116,7 @@ export default async function Home({
               </Link>
             ))}
           </div>
-          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Lagos State Government</p>
+          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Alausa Directory</p>
         </div>
       </footer>
     </main>
