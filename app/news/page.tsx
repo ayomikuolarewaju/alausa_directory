@@ -181,7 +181,7 @@ export default function NewsPage() {
           {categories.map((cat, i) => (
             <span key={cat} className="px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-colors"
               style={{
-                background: i === 0 ? "#0D0D0D" : "#fff",
+                background: i === 0 ? "#0D0D0D" : "#ffffff",
                 color: i === 0 ? "#fff" : "#0D0D0D",
                 border: "2px solid #0D0D0D",
               }}>
