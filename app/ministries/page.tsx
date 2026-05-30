@@ -1,5 +1,19 @@
 import { getByCategory } from "@/lib/data";
 import EntityCard from "@/components/EntityCard";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ministries",
+  description:
+    "Complete list of all Lagos State Government ministries, their commissioners, addresses and contact details.",
+  alternates: { canonical: "https://www.lagosdirectory.gov.ng/ministries" },
+  openGraph: {
+    title: "Lagos State Ministries | Official Directory",
+    description:
+      "Browse all Lagos State Government ministries with commissioner names, office addresses and contact information.",
+    url: "https://www.lagosdirectory.gov.ng/ministries",
+  },
+};
 
 export default function MinistriesPage() {
   const items = getByCategory("ministry");

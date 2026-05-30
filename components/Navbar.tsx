@@ -8,6 +8,11 @@ const links = [
   { href: "/ministries", label: "Ministries" },
   { href: "/agencies", label: "Agencies" },
   { href: "/parastatals", label: "Parastatals" },
+  { href: "/lgas", label: "LGAs" },
+  { href: "/news", label: "News" },
+  { href: "/services", label: "Services" },
+  { href: "/emergency", label: "🚨 Emergency" },
+  { href: "/events", label: "Events" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -18,7 +23,7 @@ export default function Navbar() {
   return (
     <nav style={{ background: "#1A3A8F", borderBottom: "4px solid #F5C518" }} className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           <div className="w-8 h-8 rounded-full" style={{ background: "#F5C518", border: "2px solid #fff" }} />
           <span className="font-display text-white text-lg font-bold tracking-tight">
             Alausa <span style={{ color: "#F5C518" }}>Directory</span>
@@ -26,42 +31,33 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop */}
-        <div className="hidden md:flex gap-1">
+        <div className="hidden lg:flex gap-0.5 overflow-x-auto">
           {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="px-4 py-2 rounded font-medium text-sm transition-all"
+            <Link key={l.href} href={l.href}
+              className="px-3 py-2 rounded font-medium text-xs whitespace-nowrap transition-all"
               style={{
-                color: pathname === l.href ? "#0D0D0D" : "#fff",
+                color: pathname === l.href ? "#0D0D0D" : l.href === "/emergency" ? "#F5C518" : "#fff",
                 background: pathname === l.href ? "#F5C518" : "transparent",
-              }}
-            >
+                fontWeight: l.href === "/emergency" ? "700" : undefined,
+              }}>
               {l.label}
             </Link>
           ))}
         </div>
 
         {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-white text-2xl leading-none"
-        >
+        <button onClick={() => setOpen(!open)} className="lg:hidden text-white text-2xl leading-none">
           {open ? "✕" : "☰"}
         </button>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div style={{ background: "#1A3A8F", borderTop: "2px solid #F5C518" }} className="md:hidden px-4 pb-4">
+        <div style={{ background: "#1A3A8F", borderTop: "2px solid #F5C518" }} className="lg:hidden px-4 pb-4">
           {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
               className="block py-2 font-medium text-sm"
-              style={{ color: pathname === l.href ? "#F5C518" : "#fff" }}
-            >
+              style={{ color: pathname === l.href ? "#F5C518" : l.href === "/emergency" ? "#F5C518" : "#fff" }}>
               {l.label}
             </Link>
           ))}
