@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     // Email to you (the admin)
     await transporter.sendMail({
       from: `"Alausa Directory" <${process.env.GMAIL_USER}>`,
-      to: "almaroofolarewaju@gmail.com",
+      to: "alausadirectory@gmail.com",
       replyTo: email,
       subject: `[Alausa Directory] ${subject || "New Contact Message"} — from ${name}`,
       html: `
