@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

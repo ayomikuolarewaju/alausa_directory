@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 const COLOR = "#1A3A8F";
 
 export async function generateStaticParams() {

@@ -52,7 +52,7 @@ export default function ContactPage() {
           {[
             { icon: "🏛️", title: "Lagos State Government", body: "Secretariat, Alausa, Ikeja, Lagos State, Nigeria" },
             { icon: "📞", title: "General Enquiries", body: "+234-1-7630000" },
-            { icon: "✉️", title: "Email", body: "almaroofolarewaju@gmail.com" },
+            { icon: "✉️", title: "Email", body: "alausadirectory@gmail.com" },
             { icon: "🕐", title: "Office Hours", body: "Monday – Friday\n8:00 AM – 4:00 PM" },
           ].map((item) => (
             <div key={item.title} className="p-4 rounded-xl" style={{ background: "#fff", border: "2px solid #0D0D0D" }}>

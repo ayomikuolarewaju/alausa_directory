@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Agencies",
   description:
     "Complete list of all Lagos State Government agencies, their directors, addresses and contact details.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/agencies" },
+  alternates: { canonical: "https://www.alausadirectory.com/agencies" },
   openGraph: {
     title: "Lagos State Agencies | Official Directory",
     description:
       "Browse all Lagos State Government agencies with director names, office addresses and contact information.",
-    url: "https://www.lagosdirectory.gov.ng/agencies",
+    url: "https://www.alausadirectory.com/agencies",
   },
 };
 

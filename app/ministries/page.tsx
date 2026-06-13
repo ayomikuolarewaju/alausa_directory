@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Ministries",
   description:
     "Complete list of all Lagos State Government ministries, their commissioners, addresses and contact details.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/ministries" },
+  alternates: { canonical: "https://www.alausadirectory.com/ministries" },
   openGraph: {
     title: "Lagos State Ministries | Official Directory",
     description:
       "Browse all Lagos State Government ministries with commissioner names, office addresses and contact information.",
-    url: "https://www.lagosdirectory.gov.ng/ministries",
+    url: "https://www.alausadirectory.com/ministries",
   },
 };
 

@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Parastatals",
   description:
     "Complete list of all Lagos State Government parastatals, their managing directors, addresses and contact details.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/parastatals" },
+  alternates: { canonical: "https://www.alausadirectory.com/parastatals" },
   openGraph: {
     title: "Lagos State Parastatals | Official Directory",
     description:
       "Browse all Lagos State Government parastatals with managing director names, office addresses and contact information.",
-    url: "https://www.lagosdirectory.gov.ng/parastatals",
+    url: "https://www.alausadirectory.com/parastatals",
   },
 };
 

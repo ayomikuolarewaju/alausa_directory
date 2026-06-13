@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "News & Updates",
   description:
     "Latest news, announcements and updates from Lagos State Government ministries, agencies and parastatals.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/news" },
+  alternates: { canonical: "https://www.alausadirectory.com/news" },
   openGraph: {
     title: "Lagos State Government News & Updates",
     description:
       "Stay informed with the latest announcements, press releases and updates from Lagos State Government.",
-    url: "https://www.lagosdirectory.gov.ng/news",
+    url: "https://www.alausadirectory.com/news",
   },
 };
 
@@ -18,7 +18,7 @@ const newsJsonLd = {
   "@context": "https://schema.org",
   "@type": "NewsMediaOrganization",
   name: "Lagos State Government Directory — News",
-  url: "https://www.lagosdirectory.gov.ng/news",
+  url: "https://www.alausadirectory.com/news",
   publisher: {
     "@type": "GovernmentOrganization",
     name: "Lagos State Government",

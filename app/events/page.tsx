@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Events Calendar — Lagos State Government",
   description:
     "Official Lagos State Government events calendar — public holidays, budget presentations, government programmes and key civic dates for 2026.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/events" },
+  alternates: { canonical: "https://www.alausadirectory.com/events" },
   keywords: [
     "Lagos State events 2026", "Lagos public holidays", "Lagos government calendar",
     "Lagos State budget 2026", "Lagos civic events",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Lagos State Government Events Calendar 2026",
     description:
       "Public holidays, budget presentations, government summits and key civic events for Lagos State in 2026.",
-    url: "https://www.lagosdirectory.gov.ng/events",
+    url: "https://www.alausadirectory.com/events",
   },
 };
 
