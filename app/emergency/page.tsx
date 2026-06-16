@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Emergency Contacts — Lagos State",
+  title: "Lagos Emergency Numbers | Police, Fire, Ambulance & Crisis Hotlines",
   description:
     "All Lagos State emergency contacts — Police, Fire Service, LASEMA, LASAMBUS, hospitals and crisis hotlines. Save these numbers today.",
   alternates: { canonical: "https://www.alausadirectory.com/emergency" },
