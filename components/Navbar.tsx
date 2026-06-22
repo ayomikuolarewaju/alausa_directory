@@ -6,7 +6,7 @@ import logo from "@/public/logo.png"
 import Image from "next/image";
 
 
-const links = [
+const mainLinks = [
   { href: "/", label: "Home" },
   { href: "/ministries", label: "Ministries" },
   { href: "/agencies", label: "Agencies" },
@@ -18,6 +18,13 @@ const links = [
   { href: "/events", label: "Events" },
   { href: "/contact", label: "Contact" },
 ];
+
+const legalLinks = [
+  { href: "/about", label: "About" },
+  { href: "/disclaimer", label: "Disclaimer" },
+  { href: "/privacy", label: "Privacy" },
+];
+
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -34,8 +41,8 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop */}
-        <div className="hidden lg:flex gap-0.5 overflow-x-auto">
-          {links.map((l) => (
+        <div className="hidden lg:flex gap-0.5">
+          {mainLinks.map((l) => (
             <Link key={l.href} href={l.href}
               className="px-3 py-2 rounded font-medium text-xs whitespace-nowrap transition-all"
               style={{
@@ -48,7 +55,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Mobile toggle */}
         <button onClick={() => setOpen(!open)} className="lg:hidden text-white text-2xl leading-none">
           {open ? "✕" : "☰"}
         </button>
@@ -57,13 +63,22 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div style={{ background: "#1A3A8F", borderTop: "2px solid #F5C518" }} className="lg:hidden px-4 pb-4">
-          {links.map((l) => (
+          {mainLinks.map((l) => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
               className="block py-2 font-medium text-sm"
               style={{ color: pathname === l.href ? "#F5C518" : l.href === "/emergency" ? "#F5C518" : "#fff" }}>
               {l.label}
             </Link>
           ))}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: "8px", paddingTop: "8px" }}>
+            {legalLinks.map(l => (
+              <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
+                className="block py-1.5 text-xs"
+                style={{ color: "rgba(255,255,255,0.6)" }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </nav>
