@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "About Lagos Directory | Alausa Secretariat Information Platform",
   description:
-    "Learn about the Lagos State Government Directory — who runs it, our mission, data sources and how we keep information accurate and up to date.",
+    "About Lagos Directory — the definitive Alausa Secretariat and Lagos State Government information platform. Learn about our mission, data sources and how we keep information current.",
   alternates: { canonical: "https://www.lagosdirectory.gov.ng/about" },
   openGraph: {
-    title: "Lagos government directory about, Alausa directory platform",
+    title: "About Lagos State Government Directory",
     description:
       "The most comprehensive public directory of Lagos State Government ministries, agencies, parastatals and local government areas.",
     url: "https://www.lagosdirectory.gov.ng/about",

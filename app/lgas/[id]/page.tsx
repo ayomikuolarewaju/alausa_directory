@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.alausadirectory.com";
+const BASE_URL = "https://www.lagosdirectory.gov.ng";
 
 const zoneColors = {
   Island:   "#1A3A8F",
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     title,
     description,
     alternates: { canonical: url },
-    keywords: [`${lga.name} LGA`, `${lga.name} Lagos`, `${lga.headquarters} Lagos`, `Lagos LGA ${lga.name}`, ...lga.knownFor],
+    keywords: [`${lga.name} LGA`, `${lga.name} Lagos`, `${lga.headquarters} Lagos`, `Lagos LGA ${lga.name}`, `${lga.name} local government area`, `${lga.name} LGA chairman 2026`, `Alausa directory ${lga.name}`, ...lga.knownFor],
     openGraph: { title: `${title} | Lagos State Directory`, description, url },
   };
 }

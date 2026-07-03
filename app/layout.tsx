@@ -1,43 +1,56 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
-const BASE_URL = "https://www.alausadirectory.com";
+const BASE_URL = "https://www.lagosdirectory.gov.ng";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Lagos State Government Directory | Ministries, Agencies & Parastatals",
-    template: "%s | Lagos State Government Directory",
+    default: "Lagos Directory | Alausa Secretariat — Ministries, Agencies & Parastatals",
+    template: "%s | Lagos Directory — Alausa Secretariat",
   },
   description:
-    "The official directory of Lagos State Government ministries, agencies and parastatals. Find principal officers, addresses, phone numbers and contact details for all Lagos State MDAs.",
+    "Lagos Directory — the definitive Alausa Secretariat and Lagos State Government directory. Find all ministries, agencies, parastatals and LGAs with principal officers, addresses and phone numbers.",
   keywords: [
-    "Lagos State Government",
-    "Lagos ministries",
-    "Lagos agencies",
-    "Lagos parastatals",
-    "Lagos MDA directory",
+    "Lagos State Government directory",
     "Lagos government contacts",
-    "Lagos commissioners",
+    "Lagos ministry directory",
+    "Lagos MDA directory",
+    "Lagos State agencies list",
+    "Lagos State officials contact",
+    "Lagos parastatals directory",
+    "Lagos LGA directory",
+    "Lagos government phone numbers",
+    "Lagos State commissioner contacts",
+    "Alausa Secretariat directory",
+    "Alausa Ikeja government offices",
+    "Alausa government contacts",
+    "Alausa Secretariat phone number",
+    "Alausa Lagos State government",
+    "Lagos Secretariat Alausa contacts",
+    "Obafemi Awolowo Way government offices",
+    "how to pay land use charge Lagos",
+    "how to register business Lagos",
+    "Lagos emergency number LASEMA",
+    "Lagos tax clearance certificate",
+    "Lagos State ministries 2026",
+    "Lagos commissioners 2026",
+    "Lagos LGA chairmen 2026",
     "Nigeria government directory",
-    "Alausa Secretariat",
-    "Lagos State officials",
   ],
-  authors: [{ name: "Lagos State Government" }],
-  creator: "Lagos State Government",
-  publisher: "Lagos State Government",
+  authors: [{ name: "Lagos Directory" }],
+  creator: "Lagos Directory",
+  publisher: "Lagos Directory",
   category: "Government",
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: BASE_URL,
-    siteName: "Lagos State Government Directory",
-    title: "Lagos State Government Directory | Ministries, Agencies & Parastatals",
+    siteName: "Lagos Directory | Alausa Secretariat",
+    title: "Lagos Directory | Alausa Secretariat — Ministries, Agencies & Parastatals",
     description:
-      "Find all Lagos State Government ministries, agencies and parastatals — principal officers, addresses and contact details in one place.",
+      "Find all Lagos State Government ministries, agencies and parastatals — Alausa Secretariat offices, principal officers, addresses and contacts in one place.",
     images: [
       {
         url: "/og-image.png",
@@ -49,9 +62,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lagos State Government Directory",
+    title: "Lagos Directory | Alausa Secretariat",
     description:
-      "Find all Lagos State Government ministries, agencies and parastatals — officers, addresses and contacts.",
+      "Lagos Directory — Alausa Secretariat offices, Lagos State ministries, agencies and parastatals with officer contacts.",
     images: ["/og-image.png"],
     creator: "@LagosStateGov",
   },
@@ -72,7 +85,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
   return (
     <html lang="en">
       <head>
@@ -86,9 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         {children}
-        <Footer />
       </body>
-      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }

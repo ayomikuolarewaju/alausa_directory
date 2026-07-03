@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.alausadirectory.com";
+const BASE_URL = "https://www.lagosdirectory.gov.ng";
 const COLOR = "#1B7A3E";
 
 export async function generateStaticParams() {
@@ -21,6 +21,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     title,
     description,
     alternates: { canonical: url },
+    keywords: [
+      entity.name,
+      `${entity.name} Lagos`,
+      `${entity.name} contact`,
+      `${entity.name} phone number address`,
+      `Lagos parastatal ${entity.name}`,
+      `Alausa Secretariat parastatal`,
+      `Lagos State parastatal directory`,
+      `${entity.officers[0]?.name ?? ""} ${entity.name}`,
+    ],
     openGraph: {
       title: `${title} | Lagos State Government Directory`,
       description,

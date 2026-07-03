@@ -3,15 +3,15 @@ import EntityCard from "@/components/EntityCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Parastatals",
+  title: "Lagos State Parastatals | LASU LASUTH LAWMA Contacts",
   description:
-    "Complete list of all Lagos State Government parastatals, their managing directors, addresses and contact details.",
-  alternates: { canonical: "https://www.alausadirectory.com/parastatals" },
+    "Complete list of all Lagos State Government parastatals including LASU, LASUTH, LAWMA and Radio Lagos — managing directors, addresses and contact details.",
+  alternates: { canonical: "https://www.lagosdirectory.gov.ng/parastatals" },
   openGraph: {
     title: "Lagos State Parastatals | Official Directory",
     description:
       "Browse all Lagos State Government parastatals with managing director names, office addresses and contact information.",
-    url: "https://www.alausadirectory.com/parastatals",
+    url: "https://www.lagosdirectory.gov.ng/parastatals",
   },
 };
 

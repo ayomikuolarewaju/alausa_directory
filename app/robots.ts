@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = "https://www.alausadirectory.com";
+const BASE_URL = "https://www.lagosdirectory.gov.ng";
 
 export default function robots(): MetadataRoute.Robots {
   return {

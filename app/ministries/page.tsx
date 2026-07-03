@@ -3,15 +3,15 @@ import EntityCard from "@/components/EntityCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Ministries",
+  title: "Lagos State Ministries | All Commissioners & Contacts 2026",
   description:
-    "Complete list of all Lagos State Government ministries, their commissioners, addresses and contact details.",
-  alternates: { canonical: "https://www.alausadirectory.com/ministries" },
+    "Complete list of all 23 Lagos State Government ministries — commissioners, Alausa Secretariat office addresses and contact details for 2026.",
+  alternates: { canonical: "https://www.lagosdirectory.gov.ng/ministries" },
   openGraph: {
-    title: "Lagos State Ministries | Official Directory",
+    title: "Lagos State Ministries 2026 | Alausa Secretariat Directory",
     description:
-      "Browse all Lagos State Government ministries with commissioner names, office addresses and contact information.",
-    url: "https://www.alausadirectory.com/ministries",
+      "Browse all Lagos State Government ministries 2026 — commissioner names, Alausa Secretariat addresses, phone numbers and emails.",
+    url: "https://www.lagosdirectory.gov.ng/ministries",
   },
 };
 

@@ -3,14 +3,14 @@ import Link from "next/link";
 import { lgas } from "@/lib/lgaData";
 
 export const metadata: Metadata = {
-  title: "LGA Directory — All 20 Local Government Areas",
-  description: "Complete directory of all 20 Local Government Areas in Lagos State — chairmen, addresses, phone numbers and ward information.",
-  alternates: { canonical: "https://www.alausadirectory.com/lgas" },
+  title: "Lagos State LGA Directory | All 20 Local Government Areas & Chairmen 2026",
+  description: "Complete directory of all 20 Local Government Areas in Lagos State 2026 — chairmen, office addresses, ward counts and population data.",
+  alternates: { canonical: "https://www.lagosdirectory.gov.ng/lgas" },
   keywords: ["Lagos LGA", "Lagos local government", "Lagos 20 LGAs", "Ikeja LGA", "Eti-Osa LGA", "Lagos Island LGA", "Surulere LGA"],
   openGraph: {
     title: "Lagos State LGA Directory | All 20 Local Government Areas",
     description: "Find all 20 Lagos State Local Government Areas with chairman names, office addresses and contact details.",
-    url: "https://www.alausadirectory.com/lgas",
+    url: "https://www.lagosdirectory.gov.ng/lgas",
   },
 };
 

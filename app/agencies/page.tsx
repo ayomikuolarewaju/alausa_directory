@@ -3,15 +3,15 @@ import EntityCard from "@/components/EntityCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Agencies",
+  title: "Lagos State Agencies | LASEMA LAMATA LASEPA LIRS Contacts",
   description:
-    "Complete list of all Lagos State Government agencies, their directors, addresses and contact details.",
-  alternates: { canonical: "https://www.alausadirectory.com/agencies" },
+    "Complete list of all Lagos State Government agencies including LASEMA, LAMATA, LASEPA and LIRS — directors, addresses and contact details.",
+  alternates: { canonical: "https://www.lagosdirectory.gov.ng/agencies" },
   openGraph: {
-    title: "Lagos State Agencies | Official Directory",
+    title: "Lagos State Agencies Directory | LASEMA LAMATA LASEPA Contacts",
     description:
       "Browse all Lagos State Government agencies with director names, office addresses and contact information.",
-    url: "https://www.alausadirectory.com/agencies",
+    url: "https://www.lagosdirectory.gov.ng/agencies",
   },
 };
 

@@ -2,9 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import logo from "@/public/logo.png"
-import Image from "next/image";
-
 
 const mainLinks = [
   { href: "/", label: "Home" },
@@ -25,7 +22,6 @@ const legalLinks = [
   { href: "/privacy", label: "Privacy" },
 ];
 
-
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -34,9 +30,9 @@ export default function Navbar() {
     <nav style={{ background: "#1A3A8F", borderBottom: "4px solid #F5C518" }} className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-          <Image src={logo} alt="Logo" className="w-24 h-16 rounded-full" />
+          <div className="w-8 h-8 rounded-full" style={{ background: "#F5C518", border: "2px solid #fff" }} />
           <span className="font-display text-white text-lg font-bold tracking-tight">
-            Alausa <span style={{ color: "#F5C518" }}>Directory</span>
+            Lagos <span style={{ color: "#F5C518" }}>Directory</span>
           </span>
         </Link>
 

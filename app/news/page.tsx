@@ -4,9 +4,9 @@ import { fetchLagosNews } from "@/lib/fetchNews";
 export const revalidate = 3600; // Rebuild page silently every hour
 
 export const metadata: Metadata = {
-  title: "News & Updates",
+  title: "Lagos State Government News | Daily Updates from Alausa Secretariat",
   description:
-    "Latest Lagos State Government news aggregated daily from Pulse Nigeria, Vanguard, The Cable, BusinessDay and Premium Times.",
+    "Daily Lagos State Government news — Alausa Secretariat announcements, ministry updates and MDA press releases aggregated from top Nigerian news sources.",
   alternates: { canonical: "https://www.lagosdirectory.gov.ng/news" },
   openGraph: {
     title: "Lagos State Government News | Daily Updates",
