@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Learn about the Lagos State Government Directory — who runs it, our mission, data sources and how we keep information accurate and up to date.",
   alternates: { canonical: "https://www.lagosdirectory.gov.ng/about" },
   openGraph: {
-    title: "About Lagos State Government Directory",
+    title: "Lagos government directory about, Alausa directory platform",
     description:
       "The most comprehensive public directory of Lagos State Government ministries, agencies, parastatals and local government areas.",
     url: "https://www.lagosdirectory.gov.ng/about",
