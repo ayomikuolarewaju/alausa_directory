@@ -174,7 +174,7 @@ export default async function Home({
           <div className="max-w-7xl mx-auto px-4 py-10">
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
               <div>
-                <p className="font-display text-white text-xl font-bold mb-1">Lagos Directory | Alausa Secretariat</p>
+                <p className="font-display text-white text-xl font-bold mb-1">Lagos Alausa Directory | Alausa Secretariat</p>
                 <p className="text-gray-400 text-sm max-w-xs">The definitive Alausa Secretariat and Lagos State Government directory — free, independent and updated regularly.</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-sm">
