@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { entities } from "@/lib/data";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 // Also registered: alausadirectory.com.ng — both point to same site
 
 export default function sitemap(): MetadataRoute.Sitemap {
