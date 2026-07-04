@@ -4,15 +4,15 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Disclaimer",
   description:
-    "Legal disclaimer for the Lagos State Government Directory. Read about accuracy, liability, external links and the independence of this platform from the Lagos State Government.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/disclaimer" },
+    "Legal disclaimer for the Alausa State Government Directory. Read about accuracy, liability, external links and the independence of this platform from the Alausa State Government.",
+  alternates: { canonical: "https://www.alausadirectory.com/disclaimer" },
 };
 
 const sections = [
   {
-    title: "Independence from Lagos State Government",
+    title: "Independence from Alausa State Government",
     content:
-      "The Lagos State Government Directory (lagosdirectory.gov.ng) is an independent civic information platform. It is not owned, operated, funded or officially endorsed by the Lagos State Government, any of its ministries, agencies, parastatals or local government areas. The use of publicly available government information on this site does not imply any official affiliation or government approval.",
+      "The Lagos State Government Directory (alausadirectory.com) is an independent civic information platform. It is not owned, operated, funded or officially endorsed by the Alausa State Government, any of its ministries, agencies, parastatals or local government areas. The use of publicly available government information on this site does not imply any official affiliation or government approval.",
   },
   {
     title: "Accuracy of Information",

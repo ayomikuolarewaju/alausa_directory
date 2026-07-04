@@ -22,15 +22,15 @@ export async function POST(req: NextRequest) {
 
     // Email to you (the admin)
     await transporter.sendMail({
-      from: `"Lagos Directory" <${process.env.GMAIL_USER}>`,
+      from: `"Alausa Directory" <${process.env.GMAIL_USER}>`,
       to: "alausadirectory@gmail.com",
       replyTo: email,
-      subject: `[Lagos Directory] ${subject || "New Contact Message"} — from ${name}`,
+      subject: `[Alausa Directory] ${subject || "New Contact Message"} — from ${name}`,
       html: `
         <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border: 2px solid #0D0D0D; border-radius: 12px; overflow: hidden;">
           <div style="background: #1A3A8F; padding: 24px 32px;">
             <h2 style="color: #F5C518; margin: 0; font-size: 20px;">New Contact Form Submission</h2>
-            <p style="color: #fff; margin: 4px 0 0; font-size: 13px;">Lagos State Government Directory</p>
+            <p style="color: #fff; margin: 4px 0 0; font-size: 13px;">Alausa State Government Directory</p>
           </div>
           <div style="padding: 32px; background: #fff;">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
@@ -60,14 +60,14 @@ export async function POST(req: NextRequest) {
 
     // Auto-reply to the sender
     await transporter.sendMail({
-      from: `"Lagos State Directory" <${process.env.GMAIL_USER}>`,
+      from: `"Alausa State Directory" <${process.env.GMAIL_USER}>`,
       to: email,
-      subject: "We received your message — Lagos State Directory",
+      subject: "We received your message — Alausa State Directory",
       html: `
         <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border: 2px solid #0D0D0D; border-radius: 12px; overflow: hidden;">
           <div style="background: #1A3A8F; padding: 24px 32px;">
             <h2 style="color: #F5C518; margin: 0; font-size: 20px;">Thank you, ${name}!</h2>
-            <p style="color: #fff; margin: 4px 0 0; font-size: 13px;">Lagos State Government Directory</p>
+            <p style="color: #fff; margin: 4px 0 0; font-size: 13px;">Alausa State Government Directory</p>
           </div>
           <div style="padding: 32px; background: #fff;">
             <p style="font-size: 14px; color: #0D0D0D; line-height: 1.7;">

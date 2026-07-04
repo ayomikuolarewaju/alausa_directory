@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Lagos State Services Guide | Land Use Charge, C of O, Business Registration",
   description:
     "How to pay land use charge Lagos, register a business, get a Certificate of Occupancy, obtain tax clearance and apply for a building permit — step-by-step Lagos State Government service guides.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/services" },
+  alternates: { canonical: "https://www.alausadirectory.com/services" },
   keywords: [
     "how to pay land use charge Lagos", "register business Lagos", "Lagos C of O application",
     "driver licence Lagos", "Lagos tax clearance", "LIRS payment", "Lagos passport",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "Lagos State Public Services Guide",
     description:
       "How to pay land use charge, register a business, get a C of O and more — step-by-step Lagos State Government service guides.",
-    url: "https://www.lagosdirectory.gov.ng/services",
+    url: "https://www.alausadirectory.com/services",
   },
 };
 

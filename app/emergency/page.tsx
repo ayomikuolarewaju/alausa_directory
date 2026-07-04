@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Lagos Emergency Contacts | LASEMA 112 Fire Police Ambulance Hotlines",
   description:
     "All Lagos State emergency hotlines — LASEMA 08060907333, Fire Service, Police, LASAMBUS ambulance and hospital contacts. Save these numbers today.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/emergency" },
+  alternates: { canonical: "https://www.alausadirectory.com/emergency" },
   keywords: [
     "Lagos emergency number", "LASEMA hotline", "Lagos fire service", "Lagos police",
     "Lagos ambulance", "Lagos emergency contacts", "112 Lagos", "767 Lagos",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Lagos State Emergency Contacts | All Hotlines",
     description:
       "Police, fire, ambulance, LASEMA and all Lagos State emergency contacts in one place. Save these numbers today.",
-    url: "https://www.lagosdirectory.gov.ng/emergency",
+    url: "https://www.alausadirectory.com/emergency",
   },
 };
 

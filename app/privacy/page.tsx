@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "Privacy Policy for the Lagos State Government Directory. Learn what data we collect, how we use it and your rights regarding your personal information.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/privacy" },
+  alternates: { canonical: "https://www.alausadirectory.com/privacy" },
 };
 
 const sections = [
@@ -183,7 +183,7 @@ export default function PrivacyPage() {
           <a href="mailto:almaroofolarewaju@gmail.com"
             className="inline-block px-5 py-2 rounded-lg font-semibold text-sm"
             style={{ background: "#fff", color: "#0D0D0D", border: "2px solid #0D0D0D" }}>
-            almaroofolarewaju@gmail.com
+            alausadirectory@gmail.com
           </a>
         </div>
       </div>
