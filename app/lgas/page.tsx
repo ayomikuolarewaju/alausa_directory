@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { lgas } from "@/lib/lgaData";
+import { lcdas as lcdaList } from "@/lib/lcdaData";
 
 export const metadata: Metadata = {
   title: "Lagos State LGA Directory | All 20 Local Government Areas & 37 LCDAs",
@@ -146,13 +147,17 @@ export default function LGAsPage() {
                           LCDAs ({lga.localCouncilDevelopmentAreas.length})
                         </p>
                         <div className="flex flex-wrap gap-1.5">
-                          {lga.localCouncilDevelopmentAreas.map(lcda => (
-                            <span key={lcda}
-                              className="text-xs px-2 py-1 rounded-full font-medium"
-                              style={{ background: `${zoneColors[lga.zone].bg}18`, color: zoneColors[lga.zone].bg, border: `1px solid ${zoneColors[lga.zone].bg}40` }}>
-                              {lcda.replace(" LCDA", "")}
-                            </span>
-                          ))}
+                          {lga.localCouncilDevelopmentAreas.map(lcda => {
+                            const lcdaId = lcda.toLowerCase().replace(/\s*lcda\s*/gi, "").trim().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "") + "-lcda";
+                            return (
+                              <Link key={lcda} href={`/lgas/lcda/${lcdaId}`}
+                                
+                                className="text-xs px-2 py-1 rounded-full font-medium transition-opacity hover:opacity-70"
+                                style={{ background: `${zoneColors[lga.zone].bg}18`, color: zoneColors[lga.zone].bg, border: `1px solid ${zoneColors[lga.zone].bg}40` }}>
+                                {lcda.replace(" LCDA", "")}
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -179,33 +184,59 @@ export default function LGAsPage() {
           <h2 className="font-display font-bold text-2xl">All {totalLCDAs} LCDAs — Quick Reference</h2>
         </div>
 
-        <div className="rounded-2xl overflow-hidden" style={{ border: "2px solid #0D0D0D", boxShadow: "4px 4px 0 #0D0D0D" }}>
-          <div className="grid grid-cols-3 text-xs font-bold uppercase tracking-widest px-4 py-3"
-            style={{ background: "#0D0D0D", color: "#F5C518" }}>
-            <span>LCDA</span>
-            <span>Parent LGA</span>
-            <span>Zone</span>
-          </div>
+        <div className="space-y-4">
+          {lcdaList.map((lcda, idx) => (
+            <div key={lcda.id} className="rounded-xl overflow-hidden"
+              style={{ border: "2px solid #0D0D0D" }}>
 
-          {lgas.flatMap(lga =>
-            lga.localCouncilDevelopmentAreas.map((lcda, i) => ({ lcda, lga, i }))
-          ).map(({ lcda, lga, i }, idx) => (
-            <Link key={`${lga.id}-${i}`} href={`/lgas/${lga.id}`}>
-              <div className="grid grid-cols-3 px-4 py-3 text-sm hover:opacity-80 transition-opacity"
-                style={{
-                  background: idx % 2 === 0 ? "#fff" : "#FAFAF5",
-                  borderTop: "1px solid #e5e7eb",
-                }}>
-                <span className="font-medium text-xs">{lcda}</span>
-                <span className="text-xs" style={{ color: zoneColors[lga.zone].bg }}>{lga.name}</span>
-                <span className="text-xs text-gray-400">{lga.zone}</span>
+              {/* LCDA header */}
+              <Link href={`/lgas/lcda/${lcda.id}`}>
+                <div className="flex items-center justify-between px-5 py-3 hover:opacity-90 transition-opacity"
+                  style={{ background: zoneColors[lcda.zone].bg }}>
+                  <div>
+                    <p className="font-display font-bold text-white text-sm">{lcda.name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.7)" }}>
+                      {lcda.parentLgaName} LGA &nbsp;·&nbsp; {lcda.wards.length} wards &nbsp;·&nbsp; {lcda.zone} Zone
+                    </p>
+                  </div>
+                  <span className="text-xs font-bold px-3 py-1 rounded flex-shrink-0"
+                    style={{ background: "#F5C518", color: "#0D0D0D" }}>
+                    View LCDA →
+                  </span>
+                </div>
+              </Link>
+
+              {/* Wards */}
+              <div className="bg-white px-5 py-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                  Wards ({lcda.wards.length})
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {lcda.wards.map((ward, i) => (
+                    <Link key={ward.id} href={`/lgas/ward/${ward.id}`}>
+                      <span className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium hover:opacity-75 transition-opacity"
+                        style={{
+                          background: `${zoneColors[lcda.zone].bg}15`,
+                          color: zoneColors[lcda.zone].bg,
+                          border: `1px solid ${zoneColors[lcda.zone].bg}35`,
+                        }}>
+                        <span className="w-4 h-4 rounded-full text-white flex items-center justify-center font-bold flex-shrink-0"
+                          style={{ background: zoneColors[lcda.zone].bg, fontSize: "9px" }}>
+                          {i + 1}
+                        </span>
+                        {ward.name.replace(/^Ward [A-Z0-9]+\s*[—–-]\s*/i, "")}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </Link>
+
+            </div>
           ))}
         </div>
 
-        <p className="text-xs text-gray-400 mt-3">
-          * Each LCDA links to its parent LGA profile. Click any row to view the full LGA details, history and map.
+        <p className="text-xs text-gray-400 mt-4">
+          * Click any LCDA header to view its full profile. Click any ward pill to view the ward detail page.
         </p>
       </div>
 

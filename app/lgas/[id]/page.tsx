@@ -1,9 +1,10 @@
 import { getLGAById, lgas } from "@/lib/lgaData";
+import { getLCDAsByParentLGA } from "@/lib/lcdaData";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com"; // Also registered: alausadirectory.com.ng — both point to same site
 
 const zoneColors = {
   Island:   "#1A3A8F",
@@ -259,18 +260,85 @@ export default async function LGADetailPage({ params }: { params: Promise<{ id: 
               <>
                 <h2 className="font-display font-bold text-lg mt-5 mb-3">🏘️ LCDAs</h2>
                 <div className="space-y-1">
-                  {lga.localCouncilDevelopmentAreas.map((lcda, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg"
-                      style={{ background: "#FAFAF5", border: "1px solid #e5e7eb" }}>
-                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
-                      {lcda}
-                    </div>
-                  ))}
+                  {lga.localCouncilDevelopmentAreas.map((lcda, i) => {
+                    const lcdaId = lcda.toLowerCase().replace(/\s*lcda\s*/gi, "").trim().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "") + "-lcda";
+                    return (
+                      <Link key={i} href={`/lgas/lcda/${lcdaId}`}
+                        className="flex items-center justify-between gap-2 text-sm px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+                        style={{ background: "#FAFAF5", border: "1px solid #e5e7eb" }}>
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
+                          {lcda}
+                        </div>
+                        <span className="text-xs font-semibold" style={{ color }}>View →</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </>
             )}
           </div>
         </div>
+
+        {/* LCDAs with wards */}
+        {(() => {
+          const lgaLcdas = getLCDAsByParentLGA(lga.id);
+          if (lgaLcdas.length === 0) return null;
+          return (
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-1.5 h-8 rounded-full" style={{ background: color }} />
+                <h2 className="font-display font-bold text-2xl">LCDAs &amp; Wards</h2>
+                <span className="text-sm text-gray-400">
+                  {lgaLcdas.length} LCDAs &nbsp;·&nbsp; {lgaLcdas.reduce((s, l) => s + l.wards.length, 0)} wards
+                </span>
+              </div>
+              <div className="space-y-4">
+                {lgaLcdas.map(lcda => (
+                  <div key={lcda.id} className="rounded-xl overflow-hidden" style={{ border: "2px solid #0D0D0D" }}>
+                    <Link href={`/lgas/lcda/${lcda.id}`}>
+                      <div className="flex items-center justify-between px-5 py-3 hover:opacity-90 transition-opacity" style={{ background: color }}>
+                        <div>
+                          <p className="font-display font-bold text-white text-base">{lcda.name}</p>
+                          <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.7)" }}>
+                            HQ: {lcda.headquarters} &nbsp;·&nbsp; {lcda.wards.length} wards &nbsp;·&nbsp; Est. {lcda.established}
+                          </p>
+                        </div>
+                        <span className="text-xs font-bold px-3 py-1 rounded" style={{ background: "#F5C518", color: "#0D0D0D" }}>
+                          View LCDA →
+                        </span>
+                      </div>
+                    </Link>
+                    <div className="px-5 py-2 flex items-center gap-3 text-sm border-b border-gray-100" style={{ background: "#FAFAF5" }}>
+                      <span>👤</span>
+                      <span className="font-semibold">{lcda.chairman}</span>
+                      <span className="text-gray-400 text-xs">&nbsp;· LCDA Chairman</span>
+                      <a href={"tel:" + lcda.phone} className="ml-auto text-xs font-medium hover:underline" style={{ color }}>{lcda.phone}</a>
+                    </div>
+                    <div className="bg-white p-4">
+                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Wards ({lcda.wards.length})</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {lcda.wards.map((ward, i) => (
+                          <Link key={ward.id} href={`/lgas/ward/${ward.id}`}>
+                            <div className="flex items-start gap-2.5 p-2.5 rounded-lg hover:opacity-80 transition-opacity cursor-pointer" style={{ background: "#FAFAF5", border: "1px solid #e5e7eb" }}>
+                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: color }}>
+                                {i + 1}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="font-semibold text-xs leading-snug">{ward.name}</p>
+                                {ward.description && <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{ward.description}</p>}
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Back + navigation */}
         <div className="flex flex-wrap items-center justify-between gap-4 mt-8 pt-6"
