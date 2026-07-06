@@ -92,7 +92,7 @@ export default async function Home({
           <div className="hero-stripes absolute top-0 right-0 w-32 h-full opacity-20" />
           <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-28">
             <div className="inline-block text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 rounded mb-6" style={{ background: "#F5C518", color: "#0D0D0D" }}>
-              Lagos State Government
+              Lagos State 
             </div>
             <h1 className="font-display font-black text-white text-4xl md:text-6xl leading-tight mb-4">
               Official Government<br />
