@@ -174,7 +174,7 @@ export default async function Home({
           <div className="max-w-7xl mx-auto px-4 py-10">
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
               <div>
-                <p className="font-display text-white text-xl font-bold mb-1">Lagos Alausa Directory | Alausa Secretariat</p>
+                <p className="font-display text-white text-xl font-bold mb-1">Lagos Directory | Alausa Secretariat</p>
                 <p className="text-gray-400 text-sm max-w-xs">The definitive Alausa Secretariat and Lagos State Government directory — free, independent and updated regularly.</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-sm">
@@ -186,7 +186,7 @@ export default async function Home({
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs uppercase tracking-widest mb-2 font-semibold">Resources</p>
-                  {["/news", "/services", "/emergency", "/events"].map(href => (
+                  {["/news", "/services", "/emergency", "/events", "/transport"].map(href => (
                     <Link key={href} href={href} className="block text-gray-400 hover:text-white capitalize py-0.5">{href.replace("/", "")}</Link>
                   ))}
                 </div>
