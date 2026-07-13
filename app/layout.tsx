@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 
 const BASE_URL = "https://www.lagosdirectory.gov.ng";
 
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <ServiceWorkerRegistration />
         <Navbar />
         {children}
         <Footer/>
