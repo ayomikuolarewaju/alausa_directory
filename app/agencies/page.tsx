@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 
 export default function AgenciesPage() {
   const items = getByCategory("agency");
+  const needsCheck = items.filter(e => e.needsVerification).length;
+
   return (
     <main className="max-w-7xl mx-auto px-4 py-12">
       <div className="mb-10">
@@ -26,6 +28,22 @@ export default function AgenciesPage() {
         <h1 className="font-display font-black text-4xl md:text-5xl mb-2">Agencies</h1>
         <p className="text-gray-500">{items.length} agencies listed</p>
       </div>
+
+      {needsCheck > 0 && (
+        <div className="mb-8 p-4 rounded-xl bg-amber-50 border-2 border-amber-200">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">⚠️</span>
+            <div>
+              <p className="font-semibold text-amber-800 text-sm">{needsCheck} agencies need verification</p>
+              <p className="text-amber-700 text-xs mt-1">
+                Leadership details for these agencies have not been confirmed by phone. 
+                Click into any agency to see verification status.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((e) => <EntityCard key={e.id} entity={e} />)}
       </div>
