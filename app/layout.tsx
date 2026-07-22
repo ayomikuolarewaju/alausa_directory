@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!;
 
 
 const BASE_URL = "https://www.lagosdirectory.gov.ng";
@@ -119,6 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* iOS splash screens — portrait */}
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
       </head>
       <body>
         <Navbar />
