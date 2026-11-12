@@ -6,38 +6,38 @@ import TransportHero from "@/components/transport/Hero";
 
 export const metadata: Metadata = {
   title: "Lagos Rail — Blue Line & Red Line",
-  description: "Lagos rail transport guide — Blue Line and Red Line schedules, stations, fares and service updates from LAMATA.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/transport/rail" },
+  description: "Current LAMATA rail service summary: Blue Line operating hours, five active stations and planned extension, plus the Red Line weekday timetable and stops.",
+  alternates: { canonical: "https://www.alausadirectory.com/transport/rail" },
   keywords: ["Lagos rail", "Lagos Blue Line", "Lagos Red Line", "LAMATA rail", "Lagos metro", "Lagos train schedule"],
   openGraph: {
     title: "Lagos Rail Directory | Blue Line & Red Line",
-    description: "Schedules, stations and fares for the Lagos Blue Line and Red Line rail services.",
-    url: "https://www.lagosdirectory.gov.ng/transport/rail",
+    description: "Current operating stations, service schedules and planned rail extensions from LAMATA.",
+    url: "https://www.alausadirectory.com/transport/rail",
   },
 };
 
 const lines = [
   {
     name: "Blue Line",
-    description: "Nigeria's first urban rail. Marina to Mile 2 along the Lagos Harbour waterfront — air-conditioned, fast and fully operational.",
+    description: "Current passenger service runs between Marina and Mile 2 through five operating stations. Three more stations are planned to open by the end of February 2027.",
     color: "#0057A8",
     status: "Operational",
     stats: [
-      { label: "Stations", value: "13" },
-      { label: "Length", value: "27 km" },
-      { label: "Journey", value: "35 min" },
+      { label: "Operating stations", value: "5" },
+      { label: "Trips/day", value: "102" },
+      { label: "Service days", value: "Mon–Sat" },
     ],
     href: "/transport/rail/blue-line",
   },
   {
     name: "Red Line",
-    description: "Commuter rail from Agbado to Marina via Agege, Mushin and Yaba. Under construction — set to transform daily commutes for millions.",
+    description: "LAMATA's published weekday passenger timetable covers Oyingbo–Agbado. The 37 km Agbado–Marina route is a longer-term corridor plan.",
     color: "#CC1F1F",
-    status: "Under Construction",
+    status: "Operational",
     stats: [
-      { label: "Stations", value: "11" },
-      { label: "Length", value: "37 km" },
-      { label: "Opens", value: "2025–26" },
+      { label: "Timetabled stops", value: "8" },
+      { label: "Daily trains", value: "9" },
+      { label: "Schedule", value: "Mon–Fri" },
     ],
     href: "/transport/rail/red-line",
   },
@@ -48,16 +48,16 @@ export default function RailPage() {
     <main>
       <TransportHero
         title="Lagos Rail"
-        subtitle="Nigeria's urban rail network — Blue Line (operational) and Red Line (coming soon) connecting Lagos Island, Mainland and suburbs."
+        subtitle="Current services: Blue Line Marina–Mile 2 (five stations, Monday–Saturday) and Red Line Oyingbo–Agbado (eight stops, Monday–Friday). Announced extensions are shown separately from operating service."
         badge="LAMATA Rail Services"
         color="#0D0D2B"
         backHref="/transport"
         backLabel="All Transport"
         stats={[
-          { label: "Lines",        value: "2" },
-          { label: "Total Stations", value: "24" },
-          { label: "Total Length",  value: "64 km" },
-          { label: "Max Speed",     value: "100 km/h" },
+          { label: "Rail Lines", value: "2" },
+          { label: "Current stops", value: "13" },
+          { label: "Blue Line trips", value: "102/day, Mon–Sat" },
+          { label: "Red Line trips", value: "9/day, Mon–Fri" },
         ]}
       />
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-10">
@@ -72,19 +72,15 @@ export default function RailPage() {
           </div>
         </section>
 
-        <section className="rounded-xl p-6" style={{ background: "#fff", border: "2px solid #0D0D0D" }}>
-          <h2 className="font-display font-bold text-xl mb-3">🎟️ Cowry Card — Smart Ticketing</h2>
-          <p className="text-sm text-gray-600 leading-relaxed mb-4">
-            The Cowry Card is LAMATA&apos;s contactless smart card for seamless travel across rail and BRT services. Top up online or at any station ticket office. No need for cash — just tap and go.
+        <section className="rounded-xl p-6 bg-white" style={{ border: "2px solid #0D0D0D" }}>
+          <h2 className="font-display font-bold text-xl mb-2">Electronic fare payment</h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            LAMATA describes Cowry as its smart-card electronic fare-payment system. Current Blue Line fare amounts, minimum balance and rail-specific payment requirements are not stated in the published timetable; check LAMATA&apos;s current guidance before travelling.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {["Tap & ride — no queuing", "Works on Blue Line & BRT", "Top up online or at stations", "Minimum balance: ₦100"].map(f => (
-              <div key={f} className="text-xs px-3 py-2 rounded-lg text-center font-medium"
-                style={{ background: "#0057A815", color: "#0057A8", border: "1px solid #0057A830" }}>
-                {f}
-              </div>
-            ))}
-          </div>
+          <a href="https://www.lamata-ng.com/electronic-fare-payment-system/" target="_blank" rel="noopener noreferrer"
+            className="inline-block mt-3 text-sm font-semibold underline" style={{ color: "#0057A8" }}>
+            LAMATA electronic fare payment information
+          </a>
         </section>
       </div>
     </main>

@@ -1,9 +1,9 @@
-import { getById, entities } from "@/lib/data";
+import { getById, entities, getEntityDescription, isRecordStale } from "@/lib/data";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 const COLOR = "#D42B2B";
 
 export async function generateStaticParams() {
@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const entity = getById(id);
   if (!entity) return {};
   const title = entity.name;
-  const head = entity.officers[0]?.name ?? "";
-  const description = `${entity.name} — Lagos State Government. ${entity.officers[0]?.title ?? ""}: ${head}. Address: ${entity.address}. Contact: ${entity.phone}.`;
+  const head = entity.officers.find(o => o.name.trim())?.name ?? "";
+  const description = getEntityDescription(entity);
   const url = `${BASE_URL}/agencies/${id}`;
   return {
     title,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       `${head} ${entity.name}`,
     ],
     openGraph: {
-      title: `${title} | Lagos State Government Directory`,
+      title: `${title} | Alausa Directory`,
       description,
       url,
       type: "website",
@@ -52,6 +52,9 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
   if (!entity || entity.category !== "agency") notFound();
 
   const hasEmptyOfficers = entity.officers.some(o => !o.name);
+  const stale = isRecordStale(entity.lastReviewedAt);
+  const phones = [entity.phone, ...(entity.additionalPhones ?? [])].filter(Boolean);
+  const emails = [entity.email, ...(entity.additionalEmails ?? [])].filter(Boolean);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -66,8 +69,8 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
       addressRegion: "Lagos",
       addressCountry: "NG",
     },
-    telephone: entity.phone,
-    email: entity.email,
+    telephone: phones.length ? phones : undefined,
+    email: emails.length ? emails : undefined,
     employee: entity.officers.filter(o => o.name).map(o => ({
       "@type": "Person",
       name: o.name,
@@ -79,12 +82,25 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
       url: "https://lagosstate.gov.ng",
     },
   };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Agencies", item: `${BASE_URL}/agencies` },
+      { "@type": "ListItem", position: 3, name: entity.name, item: `${BASE_URL}/agencies/${entity.id}` },
+    ],
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }}
       />
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -104,8 +120,9 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
               <div>
                 <p className="font-semibold text-amber-800 text-sm">Information Pending Verification</p>
                 <p className="text-amber-700 text-xs mt-1">
-                  The leadership details for this agency have not been confirmed by phone. 
-                  Call the office directly to verify current officers.
+                  {entity.sources?.length
+                    ? "Some fields still need review. The sources below identify the specific claims checked so far."
+                    : "This record is flagged for review in the existing dataset. Please verify current details with the agency."}
                 </p>
               </div>
             </div>
@@ -116,7 +133,11 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
           <div className="mb-6 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
             <div className="flex items-center gap-2">
               <span className="text-lg">✅</span>
-              <p className="text-emerald-700 text-sm font-medium">Information verified against official Lagos State sources</p>
+              <p className="text-emerald-700 text-sm font-medium">
+                {entity.sources?.length
+                  ? "This record was checked against the sources listed below. The source notes describe which details they support; they are not a full field-by-field verification history."
+                  : "This record is flagged as checked in the existing dataset; individual claims do not yet have linked sources or review dates."}
+              </p>
             </div>
           </div>
         )}
@@ -129,9 +150,11 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
           </div>
           <div className="bg-white p-6">
             <p className="text-gray-600">{entity.description}</p>
-            {entity.lastUpdated && (
-              <p className="text-xs text-gray-400 mt-3">Last updated: {entity.lastUpdated}</p>
-            )}
+            <div className="mt-3">
+              <p className="text-xs text-gray-500">Data updated: {entity.lastUpdated || "not recorded"}</p>
+              <p className="text-xs text-gray-500">Last reviewed: {entity.lastReviewedAt || "not recorded"}</p>
+              {stale && <p className="text-xs font-medium text-amber-700 mt-1">Review overdue — no full review date is recorded or it is more than 90 days old.</p>}
+            </div>
           </div>
         </div>
 
@@ -141,13 +164,13 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
             <h2 className="font-display font-bold text-xl mb-4">Contact & Location</h2>
             <div className="space-y-3 text-sm">
               <div className="flex gap-3"><span className="text-lg">📍</span><div><p className="font-semibold">Address</p><p className="text-gray-500">{entity.address}</p></div></div>
-              {entity.phone ? (
-                <div className="flex gap-3"><span className="text-lg">📞</span><div><p className="font-semibold">Phone</p><a href={"tel:" + entity.phone} className="text-gray-500 hover:underline">{entity.phone}</a></div></div>
+              {phones.length > 0 ? (
+                <div className="flex gap-3"><span className="text-lg">📞</span><div><p className="font-semibold">Phone</p><div className="space-y-1">{phones.map(phone => <a key={phone} href={"tel:" + phone} className="block text-gray-500 hover:underline">{phone}</a>)}</div></div></div>
               ) : (
                 <div className="flex gap-3"><span className="text-lg">📞</span><div><p className="font-semibold">Phone</p><p className="text-gray-400 italic">Not available</p></div></div>
               )}
-              {entity.email ? (
-                <div className="flex gap-3"><span className="text-lg">✉️</span><div><p className="font-semibold">Email</p><a href={"mailto:" + entity.email} className="text-gray-500 hover:underline">{entity.email}</a></div></div>
+              {emails.length > 0 ? (
+                <div className="flex gap-3"><span className="text-lg">✉️</span><div><p className="font-semibold">Email</p><div className="space-y-1">{emails.map(email => <a key={email} href={"mailto:" + email} className="block text-gray-500 hover:underline">{email}</a>)}</div></div></div>
               ) : (
                 <div className="flex gap-3"><span className="text-lg">✉️</span><div><p className="font-semibold">Email</p><p className="text-gray-400 italic">Not available</p></div></div>
               )}
@@ -174,7 +197,11 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
                   <div>
                     <p className="font-semibold text-sm">{o.name}</p>
                     <p className="text-xs text-gray-500">{o.title}</p>
-                    {o.verified && <span className="inline-block mt-1 text-xs text-emerald-600">✓ Verified</span>}
+                    {o.verified && (
+                      <span className="inline-block mt-1 text-xs text-emerald-600">
+                        ✓ {entity.sources?.length ? "Source checked" : "Legacy checked flag"}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -184,6 +211,23 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
             </div>
           </div>
         </div>
+
+        {entity.sources && entity.sources.length > 0 && (
+          <section className="mt-6 rounded-xl p-6 bg-white" style={{ border: "2px solid #0D0D0D" }}>
+            <h2 className="font-display font-bold text-xl mb-4">Sources checked</h2>
+            <ul className="space-y-4">
+              {entity.sources.map(source => (
+                <li key={source.url} className="text-sm">
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline" style={{ color: COLOR }}>
+                    {source.label}
+                  </a>
+                  <p className="text-gray-600 mt-1">Supports: {source.supports}</p>
+                  <p className="text-xs text-gray-400 mt-1">Checked {source.checkedAt}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
     </>
   );

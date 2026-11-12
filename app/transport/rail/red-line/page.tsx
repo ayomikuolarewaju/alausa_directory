@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
 import StationList from "@/components/transport/StationList";
-import ScheduleTable from "@/components/transport/ScheduleTable";
 import FareCard from "@/components/transport/FareCard";
-import ServiceNotice from "@/components/transport/ServiceNotice";
 import { redLineData } from "@/lib/transport/red-line";
-import { serviceNotices } from "@/lib/transport/service-notices";
 
 export const metadata: Metadata = {
-  title: "Lagos Red Line Rail | Stations, Schedule & Fares",
+  title: "Lagos Red Line | Current Timetable, Stops & Fare",
   description:
-    "Lagos Red Line commuter rail — 11 stations from Agbado to Marina via Agege, Mushin and Yaba. Under construction, expected 2025–2026.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/transport/rail/red-line" },
+    "LAMATA's published weekday Red Line timetable: nine daily trains between Oyingbo and Agbado, with all eight stop times, fare reference and official sources.",
+  alternates: { canonical: "https://www.alausadirectory.com/transport/rail/red-line" },
   keywords: [
     "Lagos Red Line", "Red Line rail Lagos", "Lagos Red Line stations",
-    "Agbado to Marina train", "Lagos commuter rail", "LAMATA Red Line",
+    "Agbado to Oyingbo train", "Lagos commuter rail", "LAMATA Red Line timetable",
   ],
   openGraph: {
-    title: "Lagos Red Line | Stations, Fares & Schedule",
-    description: "Complete guide to the Lagos Red Line commuter rail — 11 stations, projected timetable and fares.",
-    url: "https://www.lagosdirectory.gov.ng/transport/rail/red-line",
+    title: "Lagos Red Line | Published Weekday Timetable",
+    description: "LAMATA's published weekday timetable for Red Line passenger service between Oyingbo and Agbado.",
+    url: "https://www.alausadirectory.com/transport/rail/red-line",
   },
 };
 
@@ -30,7 +27,7 @@ export default function RedLinePage() {
       <TransportHero
         title={d.fullName}
         subtitle={d.description}
-        badge="Under Construction · Commuter Rail"
+        badge="Passenger Service · Oyingbo–Agbado"
         color={d.color}
         backHref="/transport/rail"
         backLabel="All Rail"
@@ -38,104 +35,102 @@ export default function RedLinePage() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-12">
+        <section className="mb-8 rounded-xl p-5 bg-blue-50" style={{ border: "2px solid #1A3A8F" }}>
+          <h2 className="font-display font-bold text-lg mb-2">What the published timetable confirms</h2>
+          <p className="text-sm text-gray-700 leading-relaxed">
+            LAMATA lists nine weekday trips: four northbound and five southbound between Oyingbo and Agbado. No Saturday or Sunday timetable is published on that schedule page, so weekend service is not confirmed here. The timetable was checked {d.checkedAt}.
+          </p>
+          <p className="text-sm text-gray-700 leading-relaxed mt-2">
+            LAMATA&apos;s 30 June 2026 update said an increase to 24 daily trips was planned for Q4 2026. Its published timetable still lists nine trips, and we could not confirm that the expansion has entered service.
+          </p>
+          <a href={d.sources[0].url} target="_blank" rel="noopener noreferrer"
+            className="inline-block mt-3 text-sm font-semibold underline" style={{ color: "#1A3A8F" }}>
+            Check LAMATA&apos;s published timetable
+          </a>
+        </section>
 
-        {/* Construction notice */}
-        <div className="mb-8 rounded-xl p-5"
-          style={{ background: "#FFFBEB", border: "2px solid #EAB308" }}>
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">🚧</span>
-            <div>
-              <p className="font-bold text-base mb-1">Under Construction — Expected 2025–2026</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                The Lagos Red Line is currently under construction. The schedule and fares shown are projected figures based on LAMATA&apos;s published plans. Trial runs are expected to begin in late 2025, with full commercial operations in 2026. Follow{" "}
-                <a href="https://lamata-ng.com" target="_blank" rel="noopener noreferrer"
-                  className="underline font-medium">lamata-ng.com</a>{" "}
-                for official updates.
-              </p>
-            </div>
+        <section className="rounded-xl overflow-hidden mb-8" style={{ border: "2px solid #0D0D0D" }}>
+          <div className="px-5 py-4" style={{ background: d.color }}>
+            <h2 className="font-display font-bold text-white text-xl">Published Train Timetable</h2>
+            <p className="text-sm text-white/80 mt-1">Monday–Friday only · Times shown as published by LAMATA</p>
           </div>
-        </div>
-
-        <ServiceNotice notices={serviceNotices} filterLines={["Red Line"]} />
-
-        <div className="grid lg:grid-cols-3 gap-6 mt-8">
-          {/* Stations */}
-          <div className="lg:col-span-2 space-y-6">
-            <StationList stations={d.stations} color={d.color} title={`Planned Stations (${d.totalStations})`} />
-
-            {/* Route map description */}
-            <div className="rounded-xl p-6 bg-white" style={{ border: "2px solid #0D0D0D" }}>
-              <h3 className="font-display font-bold text-lg mb-3">🗺️ Route Overview</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                The Red Line follows the existing Nigerian Railway Corporation (NRC) corridor from Agbado in the northwest, passing through some of Lagos&apos;s most densely populated communities — Agege, Mushin and Oshodi — before crossing to Lagos Island via Yaba, Ebute Metta and Iddo.
-              </p>
-              <div className="flex items-center gap-2 flex-wrap">
-                {d.stations.map((s, i) => (
-                  <div key={s.id} className="flex items-center gap-1">
-                    <span className="text-xs font-semibold px-2 py-1 rounded"
-                      style={{ background: s.isTerminal ? d.color : "#FAFAF5", color: s.isTerminal ? "#fff" : "#0D0D0D", border: "1px solid #e5e7eb" }}>
-                      {s.name}
-                    </span>
-                    {i < d.stations.length - 1 && <span className="text-gray-300 text-xs">→</span>}
-                  </div>
-                ))}
+          {d.schedules.map((schedule) => (
+            <div key={schedule.direction} className="border-t border-gray-200 first:border-t-0">
+              <div className="px-5 py-4 bg-gray-50">
+                <h3 className="font-display font-bold text-lg">{schedule.direction}</h3>
+                <p className="text-sm text-gray-600">{schedule.serviceHours} · {schedule.trains.length} trains</p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[900px] text-sm">
+                  <caption className="sr-only">{schedule.direction} timetable</caption>
+                  <thead>
+                    <tr className="bg-white">
+                      <th scope="col" className="px-4 py-3 text-left font-semibold">Train</th>
+                      {schedule.stations.map((station, index) => (
+                        <th key={`${station}-${index}`} scope="col" className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+                          {station}{index === 0 ? " departure" : index === schedule.stations.length - 1 ? " arrival" : " arrival"}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {schedule.trains.map((train) => (
+                      <tr key={train.trainNo} className="border-t border-gray-100">
+                        <th scope="row" className="px-4 py-3 text-left font-semibold whitespace-nowrap">{train.trainNo}</th>
+                        {train.times.map((time, index) => (
+                          <td key={`${train.trainNo}-${index}`} className="px-4 py-3 whitespace-nowrap">{time}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
+          ))}
+        </section>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <ScheduleTable
-              schedule={d.schedule}
-              color={d.color}
-              title="Projected Schedule"
-            />
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <StationList stations={d.stations} color={d.color} title="Current timetabled stations" />
+            <section className="rounded-xl p-6 bg-white" style={{ border: "2px solid #0D0D0D" }}>
+              <h2 className="font-display font-bold text-lg mb-2">Current service and planned corridor</h2>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                The eight stops above are the stations listed in LAMATA&apos;s current Oyingbo–Agbado timetable. LAMATA describes a longer-term 37 km Agbado–Marina corridor; that planning description is not the same as the stations currently shown in the passenger timetable.
+              </p>
+            </section>
+          </div>
+          <aside className="space-y-6">
             <FareCard
               fares={d.fares}
               color={d.color}
-              note="Projected fares subject to change. Cowry Card payment expected. Children under 5 travel free."
+              title="Published Fare Reference"
+              note="LAMATA announced this end-to-end fare on 18 February 2025. This is the latest published official fare reference found, not confirmation of today's fare; check with LAMATA before travel. No current zonal fare breakdown was found."
             />
-
-            {/* Rules */}
-            <div className="rounded-xl overflow-hidden" style={{ border: "2px solid #0D0D0D" }}>
-              <div className="px-5 py-4" style={{ background: d.color }}>
-                <h3 className="font-display font-bold text-white text-lg">📋 Travel Rules</h3>
-              </div>
-              <ul className="bg-white divide-y divide-gray-100">
-                {d.rules.map((rule, i) => (
-                  <li key={i} className="flex items-start gap-3 px-5 py-3 text-sm text-gray-600">
-                    <span className="text-green-500 flex-shrink-0 mt-0.5">✓</span>
-                    {rule}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Interchange info */}
-            <div className="rounded-xl p-5 bg-white" style={{ border: "2px solid #0D0D0D" }}>
-              <h3 className="font-display font-bold text-lg mb-3">🔄 Interchange Stations</h3>
-              <div className="space-y-2">
-                {d.stations.filter(s => s.interchange && s.interchange.length > 0).map(s => (
-                  <div key={s.id} className="flex items-start gap-2 text-sm">
-                    <span className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ background: d.color }} />
-                    <div>
-                      <span className="font-semibold">{s.name}</span>
-                      <span className="text-gray-400 text-xs"> — {s.interchange?.join(", ")}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Contact */}
-            <div className="rounded-xl p-5" style={{ background: d.color, border: "2px solid #0D0D0D" }}>
-              <h3 className="font-bold text-white mb-3">📞 Contact LAMATA</h3>
-              <a href="tel:01-2702778" className="block text-white font-bold text-lg mb-1">01-2702778</a>
-              <a href="https://lamata-ng.com" target="_blank" rel="noopener noreferrer"
-                className="text-xs text-red-200 hover:underline">lamata-ng.com</a>
-            </div>
-          </div>
+            <section className="rounded-xl p-5" style={{ background: d.color, border: "2px solid #0D0D0D" }}>
+              <h2 className="font-display font-bold text-white text-lg mb-3">Contact LAMATA</h2>
+              <a href="tel:+2349099526282" className="block text-white font-semibold hover:underline">09099LAMATA (09099526282)</a>
+              <a href="tel:+2349115526282" className="block text-white font-semibold hover:underline mt-1">09011LAMATA (09115526282)</a>
+              <a href="mailto:customercare@lamata-ng.com" className="block text-white text-sm hover:underline mt-3">customercare@lamata-ng.com</a>
+              <a href="https://www.lamata-ng.com/contact/" target="_blank" rel="noopener noreferrer"
+                className="inline-block text-xs text-red-100 hover:underline mt-3">LAMATA official contact page</a>
+            </section>
+          </aside>
         </div>
+
+        <section className="mt-8 rounded-xl p-6 bg-white" style={{ border: "2px solid #0D0D0D" }}>
+          <h2 className="font-display font-bold text-xl mb-2">Sources</h2>
+          <p className="text-sm text-gray-500 mb-4">Primary LAMATA sources checked {d.checkedAt}. Schedule and fare details can change; confirm with LAMATA before travelling.</p>
+          <ul className="space-y-3">
+            {d.sources.map((source) => (
+              <li key={source.url} className="text-sm">
+                <a href={source.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline" style={{ color: "#1A3A8F" }}>
+                  {source.label}
+                </a>
+                <p className="text-gray-600 mt-0.5">{source.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </main>
   );

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Lagos Transport | LAMATA Rail, BRT & Ferry Directory",
   description:
     "Complete Lagos transport guide — Blue Line rail, Red Line rail, BRT corridors and ferry routes. Schedules, fares, stations and service notices from LAMATA.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/transport" },
+  alternates: { canonical: "https://www.alausadirectory.com/transport" },
   keywords: [
     "Lagos transport", "LAMATA Lagos", "Lagos Blue Line", "Lagos Red Line",
     "Lagos BRT", "Lagos ferry", "Lagos rail schedule", "Lagos BRT fares",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lagos Transport Directory | LAMATA Rail, BRT & Ferry",
     description: "Schedules, fares, stations and routes for all LAMATA transport services in Lagos State.",
-    url: "https://www.lagosdirectory.gov.ng/transport",
+    url: "https://www.alausadirectory.com/transport",
   },
 };
 
@@ -28,7 +28,7 @@ const modes = [
     description: "Blue Line & Red Line metro rail services across Lagos",
     href: "/transport/rail",
     color: "#0057A8",
-    stats: "2 lines · 24 stations · 64 km",
+    stats: "Blue: 5 stops, 102 trips/day (Mon–Sat) · Red: 8 stops, 9 trips/day (Mon–Fri)",
   },
   {
     title: "BRT",
@@ -51,25 +51,25 @@ const modes = [
 const lines = [
   {
     name: "Blue Line",
-    description: "Nigeria's first urban rail system running from Marina to Mile 2 along the Lagos Harbour waterfront. Fast, air-conditioned and congestion-free.",
+    description: "Current passenger service runs from Marina to Mile 2 through five operating stations. LAMATA has announced three additional stations for opening by the end of February 2027.",
     color: "#0057A8",
     status: "Operational",
     stats: [
-      { label: "Stations", value: "13" },
-      { label: "Length", value: "27 km" },
-      { label: "Journey", value: "35 min" },
+      { label: "Operating stations", value: "5" },
+      { label: "Trips/day", value: "102" },
+      { label: "Service days", value: "Mon–Sat" },
     ],
     href: "/transport/rail/blue-line",
   },
   {
     name: "Red Line",
-    description: "Commuter rail from Agbado to Marina via Agege, Mushin, Yaba and Lagos Island. Currently under construction — expected to transform daily commutes.",
+    description: "LAMATA's published weekday passenger timetable covers Oyingbo–Agbado. The 37 km Agbado–Marina route is a longer-term corridor plan.",
     color: "#CC1F1F",
-    status: "Under Construction",
+    status: "Operational",
     stats: [
-      { label: "Stations", value: "11" },
-      { label: "Length", value: "37 km" },
-      { label: "Opens", value: "2025–26" },
+      { label: "Timetabled stops", value: "8" },
+      { label: "Daily trains", value: "9" },
+      { label: "Schedule", value: "Mon–Fri" },
     ],
     href: "/transport/rail/red-line",
   },
@@ -108,7 +108,7 @@ export default function TransportPage() {
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-14">
 
         {/* Service notices */}
-        <ServiceNotice notices={serviceNotices} title="Live Service Notices" />
+        <ServiceNotice notices={serviceNotices} title="Current Service Information" />
 
         {/* Transport modes */}
         <section>
@@ -156,15 +156,15 @@ export default function TransportPage() {
             The Lagos Metropolitan Area Transport Authority (LAMATA) plans, coordinates and manages transportation in the Lagos metropolitan area. LAMATA oversees rail, BRT and ferry services, working to reduce congestion and provide safe, affordable public transport for over 20 million Lagosians.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="https://lamata-ng.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://www.lamata-ng.com" target="_blank" rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-lg font-bold text-sm"
               style={{ background: "#F5C518", color: "#0D0D0D", border: "2px solid #0D0D0D" }}>
-              Visit lamata-ng.com →
+              Visit LAMATA website →
             </a>
-            <a href="tel:01-2702778"
+            <a href="tel:+2349099526282"
               className="px-5 py-2.5 rounded-lg font-semibold text-sm"
               style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "2px solid rgba(255,255,255,0.3)" }}>
-              📞 01-2702778
+              📞 09099LAMATA (09099526282)
             </a>
           </div>
         </section>

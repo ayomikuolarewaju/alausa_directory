@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Lagos Ferry Services | Routes, Fares & Terminals",
   description:
     "Lagos ferry services guide — routes, fares, terminals and schedules across Lagos Lagoon. Marina to Ikorodu, Apapa, Badagry and more.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/transport/ferry" },
+  alternates: { canonical: "https://www.alausadirectory.com/transport/ferry" },
   keywords: [
     "Lagos ferry", "Lagos ferry schedule", "Lagos ferry routes", "Lagos ferry fares",
     "Marina to Ikorodu ferry", "Lagos waterway transport", "LASWA ferry",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lagos Ferry Services | Routes, Fares & Terminals",
     description: "Complete guide to Lagos ferry services — 8 routes, 12 terminals and schedules across Lagos Lagoon.",
-    url: "https://www.lagosdirectory.gov.ng/transport/ferry",
+    url: "https://www.alausadirectory.com/transport/ferry",
   },
 };
 

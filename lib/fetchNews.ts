@@ -1,12 +1,13 @@
 import Parser from "rss-parser";
+import { unstable_cache } from "next/cache";
 
 export type NewsItem = {
   id: string;
   title: string;
-  summary: string;
   category: string;
   categoryColor: string;
   date: string;
+  publishedAt?: string;
   source: string;
   sourceColor: string;
   url: string;
@@ -56,7 +57,7 @@ function cleanText(str?: string) {
   return str.replace(/<[^>]*>/g, "").replace(/&[a-z]+;/gi, " ").replace(/\s+/g, " ").trim().slice(0, 220);
 }
 
-export async function fetchLagosNews(): Promise<{
+async function fetchLagosNewsUncached(): Promise<{
   items: NewsItem[];
   sources: string[];
   fetchedAt: string;
@@ -93,17 +94,19 @@ export async function fetchLagosNews(): Promise<{
 
       const cat    = detectCategory(`${title} ${desc}`);
       const pubDate = item.pubDate ?? item.isoDate;
-      const dateStr = pubDate
-        ? new Date(pubDate).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })
-        : new Date().toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+      const parsedDate = pubDate ? new Date(pubDate) : null;
+      const validDate = parsedDate && Number.isFinite(parsedDate.getTime()) ? parsedDate : null;
+      const dateStr = validDate
+        ? validDate.toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })
+        : "Date not provided";
 
       allItems.push({
         id:            Buffer.from(url).toString("base64").slice(0, 16),
         title,
-        summary:       desc,
         category:      cat.label,
         categoryColor: cat.color,
         date:          dateStr,
+        publishedAt:   validDate?.toISOString(),
         source:        feed.source,
         sourceColor:   feed.color,
         url,
@@ -113,7 +116,7 @@ export async function fetchLagosNews(): Promise<{
   });
 
   // Sort newest first
-  allItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  allItems.sort((a, b) => (Date.parse(b.publishedAt ?? "") || 0) - (Date.parse(a.publishedAt ?? "") || 0));
 
   // Deduplicate similar titles
   const seen  = new Set<string>();
@@ -134,3 +137,7 @@ export async function fetchLagosNews(): Promise<{
     successCount,
   };
 }
+
+export const fetchLagosNews = unstable_cache(fetchLagosNewsUncached, ["lagos-news-feed"], {
+  revalidate: 3600,
+});

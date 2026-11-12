@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { fetchLagosNews } from "@/lib/fetchNews";
 
-export const revalidate = 3600; // Rebuild page silently every hour
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Lagos State Government News | Daily Updates from Alausa Secretariat",
+  title: "Lagos Government News Links | Alausa Directory",
   description:
-    "Daily Lagos State Government news — Alausa Secretariat announcements, ministry updates and MDA press releases aggregated from top Nigerian news sources.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/news" },
+    "Headlines, publication dates, sources and links about Lagos State from Nigerian news feeds. We link to original publishers and do not republish article text.",
+  alternates: { canonical: "https://www.alausadirectory.com/news" },
   openGraph: {
-    title: "Lagos State Government News | Daily Updates",
-    description: "Real-time Lagos government news aggregated from top Nigerian news sources. Fresh content updated hourly.",
-    url: "https://www.lagosdirectory.gov.ng/news",
+    title: "Lagos Government News Links",
+    description: "Headlines and links to original reports about Lagos State, with publisher and publication date.",
+    url: "https://www.alausadirectory.com/news",
   },
 };
 
@@ -45,13 +45,13 @@ export default async function NewsPage() {
       <div className="mb-8">
         <div className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded mb-4"
           style={{ background: "#F5C518", color: "#0D0D0D" }}>
-          Live News Feed
+          News links
         </div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display font-black text-4xl md:text-5xl mb-2">News & Announcements</h1>
             <p className="text-gray-500 max-w-xl text-sm">
-              Lagos State Government news aggregated from {successCount} active sources including{" "}
+              Headlines about Lagos State from {successCount} active news feeds including{" "}
               {sources.slice(0, 3).join(", ")}{sources.length > 3 ? " and more" : ""}.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default async function NewsPage() {
             <span className="inline-block w-2 h-2 rounded-full"
               style={{ background: items.length > 0 ? "#22c55e" : "#f59e0b",
                        boxShadow: items.length > 0 ? "0 0 6px #22c55e" : "none" }} />
-            {items.length > 0 ? `${items.length} stories · Updated ${lastUpdated}` : "Fetching feeds..."}
+            {items.length > 0 ? `${items.length} headlines · Feeds checked ${lastUpdated}` : "News feeds currently unavailable"}
           </div>
         </div>
       </div>
@@ -68,8 +68,8 @@ export default async function NewsPage() {
       {items.length === 0 && (
         <div className="py-20 text-center rounded-2xl mb-8" style={{ border: "2px dashed #e5e7eb" }}>
           <p className="text-4xl mb-3">📡</p>
-          <p className="font-semibold text-lg mb-1">Connecting to news feeds...</p>
-          <p className="text-gray-500 text-sm">RSS sources are loading. Refresh in a moment or check back shortly.</p>
+          <p className="font-semibold text-lg mb-1">News feeds are temporarily unavailable</p>
+          <p className="text-gray-500 text-sm">There are no headlines to show right now. Please try again later.</p>
         </div>
       )}
 
@@ -113,9 +113,6 @@ export default async function NewsPage() {
               </div>
               <div className="p-5 bg-white flex flex-col flex-1">
                 <h2 className="font-display font-bold text-base leading-snug mb-2 line-clamp-3">{item.title}</h2>
-                {item.summary && (
-                  <p className="text-sm text-gray-500 line-clamp-2 mb-4">{item.summary}</p>
-                )}
                 <div className="flex items-center justify-between text-xs text-gray-400 mt-auto pt-3 border-t border-gray-100">
                   <span className="font-semibold" style={{ color: item.sourceColor }}>{item.source}</span>
                   <span>{item.date}</span>
@@ -169,7 +166,7 @@ export default async function NewsPage() {
       {sources.length > 0 && (
         <div className="mt-10 p-5 rounded-xl text-sm text-gray-500"
           style={{ background: "#fff", border: "2px dashed #e5e7eb" }}>
-          <strong>Sources:</strong> {sources.join(" · ")}. News is automatically fetched every hour and filtered for Lagos State Government relevance. All articles link to their original source. We do not host third-party content.
+          <strong>Sources:</strong> {sources.join(" · ")}. Headlines, publication dates, publisher names and links are fetched server-side and cached for up to an hour. Each link opens the original publisher. We do not republish article text.
         </div>
       )}
 

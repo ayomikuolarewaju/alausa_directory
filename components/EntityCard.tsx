@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Entity } from "@/lib/data";
+import { Entity, isRecordStale } from "@/lib/data";
 
 const categoryColor: Record<Entity["category"], { bg: string; text: string; border: string }> = {
   ministry: { bg: "#1A3A8F", text: "#fff", border: "#1A3A8F" },
@@ -14,6 +14,7 @@ export default function EntityCard({ entity }: { entity: Entity }) {
   // Get the first officer with a name, or null if all are empty
   const primaryOfficer = entity.officers.find(o => o.name?.trim()) ?? null;
   const hasEmptyOfficers = entity.officers.some(o => !o.name?.trim());
+  const stale = isRecordStale(entity.lastReviewedAt);
 
   return (
     <Link href={href}>
@@ -34,17 +35,21 @@ export default function EntityCard({ entity }: { entity: Entity }) {
               {entity.category}
             </span>
 
-            {entity.verified && (
+            {entity.sources?.length ? (
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-sky-700 bg-sky-50 px-2 py-1 rounded border border-sky-200">
+                Sources listed
+              </span>
+            ) : entity.verified ? (
               <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
-                Verified
+                Legacy checked flag
               </span>
-            )}
+            ) : null}
 
             {entity.needsVerification && (
               <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-200">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
-                Needs Check
+                Review requested
               </span>
             )}
           </div>
@@ -75,7 +80,9 @@ export default function EntityCard({ entity }: { entity: Entity }) {
               <span className="font-semibold">{primaryOfficer.name}</span>
               <span className="text-gray-500"> — {primaryOfficer.title}</span>
               {primaryOfficer.verified && (
-                <span className="ml-1 text-emerald-600">✓</span>
+                <span className="ml-1 text-xs text-emerald-600">
+                  · {entity.sources?.length ? "Source checked" : "Legacy checked flag"}
+                </span>
               )}
             </div>
           ) : hasEmptyOfficers ? (
@@ -88,9 +95,11 @@ export default function EntityCard({ entity }: { entity: Entity }) {
           ) : null}
 
           {/* Last Updated */}
-          {entity.lastUpdated && (
-            <p className="text-xs text-gray-400">Updated: {entity.lastUpdated}</p>
-          )}
+          <div className="text-xs text-gray-500">
+            <p>Data updated: {entity.lastUpdated || "not recorded"}</p>
+            <p>Last reviewed: {entity.lastReviewedAt || "not recorded"}</p>
+            {stale && <p className="mt-1 font-medium text-amber-700">Review overdue — no full review date is recorded or it is more than 90 days old.</p>}
+          </div>
         </div>
       </div>
     </Link>

@@ -1,134 +1,107 @@
-import type { Station, ScheduleEntry, FareTier } from "./blue-line";
+import type { FareTier } from "./blue-line";
+
+type RedLineStation = {
+  id: string;
+  name: string;
+  isTerminal?: boolean;
+};
+
+type TrainTimes = {
+  trainNo: string;
+  times: string[];
+};
+
+type DirectionalTimetable = {
+  direction: string;
+  from: string;
+  to: string;
+  stations: string[];
+  serviceHours: string;
+  trains: TrainTimes[];
+};
 
 export const redLineData = {
   name: "Red Line",
   fullName: "Lagos Red Line Rail",
   color: "#CC1F1F",
-  status: "Under Construction" as const,
+  status: "Passenger Service" as const,
   operator: "Lagos Metropolitan Area Transport Authority (LAMATA)",
-  expectedOpening: "2025–2026",
-  length: "37 km",
-  totalStations: 11,
+  length: "37 km planned corridor",
+  totalStations: 8,
   type: "Commuter Rail",
   description:
-    "The Lagos Red Line is a commuter rail system running from Agbado in the northwest to Marina on Lagos Island. It follows the existing Nigerian Railway Corporation (NRC) track corridor and will serve some of the most densely populated communities in Lagos, including Agege, Mushin, Yaba and Lagos Island.",
+    "LAMATA's published weekday timetable covers passenger service between Oyingbo and Agbado. The 37 km Agbado–Marina route is the longer-term corridor plan; the published timetable does not list service to Marina.",
   overview: [
-    { label: "Line Length",       value: "37 km" },
-    { label: "Stations",          value: "11" },
-    { label: "Journey Time",      value: "~50 minutes end to end" },
-    { label: "Type",              value: "Commuter Rail" },
-    { label: "Expected Opening",  value: "2025–2026" },
-    { label: "Status",            value: "Under Construction" },
+    { label: "Current Service", value: "Oyingbo ↔ Agbado" },
+    { label: "Timetabled Stops", value: "8" },
+    { label: "Published Trains", value: "9 weekday trips/day" },
+    { label: "Journey Time", value: "~50 minutes end to end" },
+    { label: "Planned Corridor", value: "37 km, Agbado–Marina" },
+    { label: "Published Service Days", value: "Monday–Friday" },
   ],
   stations: [
+    { id: "oyingbo-red", name: "Oyingbo", isTerminal: true },
+    { id: "yaba", name: "Yaba" },
+    { id: "mushin", name: "Mushin" },
+    { id: "oshodi-red", name: "Oshodi" },
+    { id: "ikeja-red", name: "Ikeja" },
+    { id: "agege-red", name: "Agege" },
+    { id: "iju", name: "Iju" },
+    { id: "agbado", name: "Agbado", isTerminal: true },
+  ] as RedLineStation[],
+  schedules: [
     {
-      id: "agbado",
-      name: "Agbado",
-      zone: 1,
-      interchange: ["Bus Connections"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Parking"],
-      coordinates: { lat: 6.6600, lng: 3.2900 },
-      isTerminal: true,
+      direction: "Northbound: Oyingbo to Agbado",
+      from: "Oyingbo",
+      to: "Agbado",
+      stations: ["Oyingbo", "Yaba", "Mushin", "Oshodi", "Ikeja", "Agege", "Iju", "Agbado"],
+      serviceHours: "06:00 AM–07:30 PM, Monday–Friday",
+      trains: [
+        { trainNo: "LAM001", times: ["06:00 AM", "06:09 AM", "06:14 AM", "06:21 AM", "06:29 AM", "06:36 AM", "06:45 AM", "06:50 AM"] },
+        { trainNo: "LAM002", times: ["08:10 AM", "08:19 AM", "08:24 AM", "08:31 AM", "08:39 AM", "08:46 AM", "08:55 AM", "09:00 AM"] },
+        { trainNo: "LAM003", times: ["05:20 PM", "05:29 PM", "05:34 PM", "05:41 PM", "05:49 PM", "05:56 PM", "06:05 PM", "06:10 PM"] },
+        { trainNo: "LAM004", times: ["06:40 PM", "06:49 PM", "06:54 PM", "07:01 PM", "07:09 PM", "07:16 PM", "07:25 PM", "07:30 PM"] },
+      ],
     },
     {
-      id: "iju",
-      name: "Iju",
-      zone: 1,
-      facilities: ["Ticket Office", "Waiting Lounge"],
-      coordinates: { lat: 6.6400, lng: 3.3100 },
+      direction: "Southbound: Agbado to Oyingbo",
+      from: "Agbado",
+      to: "Oyingbo",
+      stations: ["Agbado", "Iju", "Agege", "Ikeja", "Oshodi", "Mushin", "Yaba", "Oyingbo"],
+      serviceHours: "06:15 AM–08:40 PM, Monday–Friday",
+      trains: [
+        { trainNo: "LAM101", times: ["06:15 AM", "06:22 AM", "06:31 AM", "06:38 AM", "06:47 AM", "06:53 AM", "06:59 AM", "07:05 AM"] },
+        { trainNo: "LAM102", times: ["07:10 AM", "07:17 AM", "07:26 AM", "07:33 AM", "07:42 AM", "07:48 AM", "07:54 AM", "08:00 AM"] },
+        { trainNo: "LAM103", times: ["09:10 AM", "09:17 AM", "09:26 AM", "09:33 AM", "09:42 AM", "09:48 AM", "09:54 AM", "10:00 AM"] },
+        { trainNo: "LAM104", times: ["06:50 PM", "06:57 PM", "07:06 PM", "07:13 PM", "07:22 PM", "07:28 PM", "07:33 PM", "07:40 PM"] },
+        { trainNo: "LAM105", times: ["07:50 PM", "07:57 PM", "08:06 PM", "08:13 PM", "08:22 PM", "08:28 PM", "08:33 PM", "08:40 PM"] },
+      ],
     },
-    {
-      id: "agege-red",
-      name: "Agege",
-      zone: 2,
-      interchange: ["Blue Line Interchange (future)"],
-      facilities: ["Ticket Office", "Waiting Lounge", "CCTV"],
-      coordinates: { lat: 6.6193, lng: 3.3192 },
-    },
-    {
-      id: "mushin",
-      name: "Mushin",
-      zone: 2,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.5277, lng: 3.3561 },
-    },
-    {
-      id: "oshodi-red",
-      name: "Oshodi",
-      zone: 2,
-      interchange: ["Blue Line Interchange", "BRT Hub"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Disability Access"],
-      coordinates: { lat: 6.5570, lng: 3.3480 },
-    },
-    {
-      id: "yaba",
-      name: "Yaba",
-      zone: 3,
-      interchange: ["Bus Connections"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV"],
-      coordinates: { lat: 6.5095, lng: 3.3711 },
-    },
-    {
-      id: "ebute-metta-red",
-      name: "Ebute Metta",
-      zone: 3,
-      interchange: ["Blue Line Interchange"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV"],
-      coordinates: { lat: 6.4784, lng: 3.3700 },
-    },
-    {
-      id: "oyingbo-red",
-      name: "Oyingbo",
-      zone: 3,
-      facilities: ["Ticket Office", "Waiting Lounge"],
-      coordinates: { lat: 6.4900, lng: 3.3750 },
-    },
-    {
-      id: "iddo-red",
-      name: "Iddo",
-      zone: 3,
-      interchange: ["NRC Terminus", "Blue Line"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Parking"],
-      coordinates: { lat: 6.4744, lng: 3.3828 },
-    },
-    {
-      id: "lagos-island-red",
-      name: "Lagos Island",
-      zone: 4,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.4531, lng: 3.3958 },
-    },
-    {
-      id: "marina-red",
-      name: "Marina",
-      zone: 4,
-      interchange: ["Blue Line Terminal", "Ferry Terminal"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Disability Access"],
-      coordinates: { lat: 6.4509, lng: 3.3960 },
-      isTerminal: true,
-    },
-  ] as Station[],
-
-  schedule: [
-    { day: "Weekday",  firstTrain: "05:00",  lastTrain: "23:00",  frequency: "Every 15–20 minutes (projected)" },
-    { day: "Saturday", firstTrain: "06:00",  lastTrain: "22:00",  frequency: "Every 20–30 minutes (projected)" },
-    { day: "Sunday",   firstTrain: "07:00",  lastTrain: "21:00",  frequency: "Every 30 minutes (projected)" },
-  ] as ScheduleEntry[],
-
+  ] as DirectionalTimetable[],
   fares: [
-    { zones: "Zone 1–2 (1–3 stops)",  fare: 150 },
-    { zones: "Zone 1–3 (4–7 stops)",  fare: 300 },
-    { zones: "Zone 1–4 (8–11 stops)", fare: 400 },
-    { zones: "Monthly Pass",           fare: 8000 },
-    { zones: "Student Monthly",        fare: 5000 },
+    { zones: "Agbado–Oyingbo, one-way", fare: 1000 },
   ] as FareTier[],
-
-  rules: [
-    "No food or drinks on trains",
-    "No smoking in stations or on trains",
-    "Priority seating for elderly, pregnant and disabled passengers",
-    "Children under 5 travel free with a paying adult",
-    "Valid token or card required before boarding",
-    "Platform doors must be clear before train departure",
+  sources: [
+    {
+      label: "LAMATA Red Line timetable",
+      url: "https://www.lamata-ng.com/our-schedule/redline-train-schedule/",
+      detail: "Published Monday–Friday timetable, stop times, service hours and journey time.",
+    },
+    {
+      label: "LAMATA rail network and Red Line overview",
+      url: "https://www.lamata-ng.com/train-services/",
+      detail: "Long-term 37 km Agbado–Marina corridor plan and phased-service context.",
+    },
+    {
+      label: "LAMATA fare announcement — 18 February 2025",
+      url: "https://www.lamata-ng.com/2025/02/18/sanwo-olu-announces-30-reduction-in-red-line-fare-commissions/",
+      detail: "Published ₦1,000 Agbado–Oyingbo fare; no current zonal breakdown was found.",
+    },
+    {
+      label: "LAMATA operating-license and expansion update — 30 June 2026",
+      url: "https://www.lamata-ng.com/2026/06/30/nrc-grants-lamata-permanent-rail-operating-license-paving-the-way-for-major-expansion-of-lagos-red-line/",
+      detail: "Reports nine current daily trips and a plan for 24 by Q4 2026; the timetable still lists nine.",
+    },
   ],
+  checkedAt: "12 November 2026",
 };

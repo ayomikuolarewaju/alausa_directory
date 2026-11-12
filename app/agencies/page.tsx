@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Lagos State Agencies | LASEMA LAMATA LASEPA LIRS Contacts",
   description:
     "Complete list of all Lagos State Government agencies including LASEMA, LAMATA, LASEPA and LIRS — directors, addresses and contact details.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/agencies" },
+  alternates: { canonical: "https://www.alausadirectory.com/agencies" },
   openGraph: {
     title: "Lagos State Agencies Directory | LASEMA LAMATA LASEPA Contacts",
     description:
       "Browse all Lagos State Government agencies with director names, office addresses and contact information.",
-    url: "https://www.lagosdirectory.gov.ng/agencies",
+    url: "https://www.alausadirectory.com/agencies",
   },
 };
 
@@ -36,8 +36,8 @@ export default function AgenciesPage() {
             <div>
               <p className="font-semibold text-amber-800 text-sm">{needsCheck} agencies need verification</p>
               <p className="text-amber-700 text-xs mt-1">
-                Leadership details for these agencies have not been confirmed by phone. 
-                Click into any agency to see verification status.
+                These records are flagged for review in the existing dataset. Read the{" "}
+                <a href="/methodology" className="underline">methodology</a> to understand what the status does and does not mean.
               </p>
             </div>
           </div>

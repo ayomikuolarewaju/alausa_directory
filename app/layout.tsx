@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!;
 
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | Lagos Directory — Alausa Secretariat",
   },
   description:
-    "Lagos Directory — the definitive Alausa Secretariat and Lagos State Government directory. Find all ministries, agencies, parastatals and LGAs with principal officers, addresses and phone numbers.",
+    "An independent directory of Lagos State ministries, agencies, parastatals and local governments, with officeholders, addresses and contact details.",
   keywords: [
     "Lagos State Government directory",
     "Lagos government contacts",
@@ -45,7 +45,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Lagos Directory" }],
   creator: "Lagos Directory",
   publisher: "Lagos Directory",
-  category: "Government",
   openGraph: {
     type: "website",
     locale: "en_NG",
@@ -53,13 +52,13 @@ export const metadata: Metadata = {
     siteName: "Lagos Directory | Alausa Secretariat",
     title: "Lagos Directory | Alausa Secretariat — Ministries, Agencies & Parastatals",
     description:
-      "Find all Lagos State Government ministries, agencies and parastatals — Alausa Secretariat offices, principal officers, addresses and contacts in one place.",
+      "An independent directory of Lagos State ministries, agencies and parastatals, including officeholders, addresses and contacts.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Lagos State Government Directory",
+        alt: "Alausa Directory — independent civic information platform",
       },
     ],
   },
@@ -69,7 +68,6 @@ export const metadata: Metadata = {
     description:
       "Lagos Directory — Alausa Secretariat offices, Lagos State ministries, agencies and parastatals with officer contacts.",
     images: ["/og-image.png"],
-    creator: "@LagosStateGov",
   },
   robots: {
     index: true,

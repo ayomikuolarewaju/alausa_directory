@@ -1,9 +1,9 @@
 type Station = {
   id: string;
   name: string;
-  zone: number;
+  zone?: number;
   interchange?: string[];
-  facilities: string[];
+  facilities?: string[];
   isTerminal?: boolean;
 };
 
@@ -53,7 +53,9 @@ export default function StationList({ stations, color, title = "Stations" }: Pro
                     Terminal
                   </span>
                 )}
-                <span className="text-xs text-gray-400">Zone {station.zone}</span>
+                {station.zone !== undefined && (
+                  <span className="text-xs text-gray-400">Zone {station.zone}</span>
+                )}
               </div>
 
               {station.interchange && station.interchange.length > 0 && (
@@ -67,17 +69,19 @@ export default function StationList({ stations, color, title = "Stations" }: Pro
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-1 mt-1">
-                {station.facilities.slice(0, 4).map(f => (
-                  <span key={f} className="text-xs px-1.5 py-0.5 rounded text-gray-500"
-                    style={{ background: "#FAFAF5", border: "1px solid #e5e7eb" }}>
-                    {f}
-                  </span>
-                ))}
-                {station.facilities.length > 4 && (
-                  <span className="text-xs text-gray-400">+{station.facilities.length - 4} more</span>
-                )}
-              </div>
+              {station.facilities && station.facilities.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {station.facilities.slice(0, 4).map(f => (
+                    <span key={f} className="text-xs px-1.5 py-0.5 rounded text-gray-500"
+                      style={{ background: "#FAFAF5", border: "1px solid #e5e7eb" }}>
+                      {f}
+                    </span>
+                  ))}
+                  {station.facilities.length > 4 && (
+                    <span className="text-xs text-gray-400">+{station.facilities.length - 4} more</span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}

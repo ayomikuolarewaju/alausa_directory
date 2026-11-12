@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Lagos State Parastatals | LASU LASUTH LAWMA Contacts",
   description:
     "Complete list of all Lagos State Government parastatals including LASU, LASUTH, LAWMA and Radio Lagos — managing directors, addresses and contact details.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/parastatals" },
+  alternates: { canonical: "https://www.alausadirectory.com/parastatals" },
   openGraph: {
     title: "Lagos State Parastatals | Official Directory",
     description:
       "Browse all Lagos State Government parastatals with managing director names, office addresses and contact information.",
-    url: "https://www.lagosdirectory.gov.ng/parastatals",
+    url: "https://www.alausadirectory.com/parastatals",
   },
 };
 
@@ -36,8 +36,8 @@ export default function ParastatalsPage() {
             <div>
               <p className="font-semibold text-amber-800 text-sm">{needsCheck} parastatals need verification</p>
               <p className="text-amber-700 text-xs mt-1">
-                Leadership details for these parastatals have not been confirmed by phone. 
-                Click into any parastatal to see verification status.
+                These records are flagged for review in the existing dataset. Read the{" "}
+                <a href="/methodology" className="underline">methodology</a> to understand what the status does and does not mean.
               </p>
             </div>
           </div>

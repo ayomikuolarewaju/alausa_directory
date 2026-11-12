@@ -17,6 +17,7 @@ const mainLinks = [
   { href: "/events", label: "Events" },
   { href: "/transport", label: "🚊 Transport" },
   { href: "/contact", label: "Contact" },
+  { href: "/methodology", label: "Methodology" },
 ];
 
 const legalLinks = [
@@ -33,7 +34,7 @@ export default function Navbar() {
     <nav style={{ background: "#1A3A8F", borderBottom: "4px solid #F5C518" }} className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-          <Image src={logo} alt="Logo" className="w-16 h-10 rounded-full" />
+          <Image src={logo} alt="Alausa Directory" sizes="64px" className="w-16 h-10 rounded-full" />
           <span className="font-display text-white text-lg font-bold tracking-tight">
             Alausa <span style={{ color: "#F5C518" }}>Directory</span>
           </span>

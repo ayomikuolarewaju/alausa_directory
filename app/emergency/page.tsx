@@ -201,7 +201,7 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Lagos State Emergency Contacts",
   description: "All emergency contacts for Lagos State Government services",
-  url: "https://www.lagosdirectory.gov.ng/emergency",
+  url: "https://www.alausadirectory.com/emergency",
   mainEntity: categories.flatMap(cat =>
     cat.contacts.map(c => ({
       "@type": "EmergencyService",

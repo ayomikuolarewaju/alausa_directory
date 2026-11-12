@@ -1,27 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getByCategory } from "@/lib/data";
+import { lgas } from "@/lib/lgaData";
 
 export const metadata: Metadata = {
-  title: "About Lagos Directory | Alausa Secretariat Information Platform",
+  title: "About Alausa Directory | Independent Civic Platform",
   description:
-    "About Lagos Directory — the definitive Alausa Secretariat and Lagos State Government information platform. Learn about our mission, data sources and how we keep information current.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/about" },
+    "About Alausa Directory, an independent civic information platform. Learn how our directory is compiled, how verification labels work and how to report corrections.",
+  alternates: { canonical: "https://www.alausadirectory.com/about" },
   openGraph: {
-    title: "About Lagos State Government Directory",
+    title: "About Alausa Directory",
     description:
-      "The most comprehensive public directory of Lagos State Government ministries, agencies, parastatals and local government areas.",
-    url: "https://www.lagosdirectory.gov.ng/about",
+      "An independent public directory of Lagos State institutions and local government areas.",
+    url: "https://www.alausadirectory.com/about",
   },
 };
-
-const stats = [
-  { value: "23", label: "Ministries" },
-  { value: "12", label: "Agencies" },
-  { value: "13", label: "Parastatals" },
-  { value: "20", label: "LGA Profiles" },
-  { value: "84+", label: "Total Pages" },
-  { value: "Free", label: "Always" },
-];
 
 const team = [
   {
@@ -33,15 +26,20 @@ const team = [
 ];
 
 const dataSources = [
-  { icon: "🏛️", name: "Lagos State Government Official Website", url: "https://lagosstate.gov.ng" },
-  { icon: "📋", name: "Lagos State Gazette & Official Publications" },
-  { icon: "🗞️", name: "Verified press releases from Lagos MDAs" },
-  { icon: "📞", name: "Direct contact verification with agency offices" },
-  { icon: "🗺️", name: "Nigeria Galleria Government Records" },
-  { icon: "📊", name: "National Population Commission (NPC) Census Data" },
+  { icon: "🏛️", name: "Lagos State Government official publications and agency websites", url: "https://lagosstate.gov.ng" },
+  { icon: "📋", name: "Gazettes, official notices and budget documents" },
+  { icon: "🗞️", name: "Press releases published by the relevant ministry or agency" },
 ];
 
 export default function AboutPage() {
+  const stats = [
+    { value: getByCategory("ministry").length, label: "Ministries" },
+    { value: getByCategory("agency").length, label: "Agencies" },
+    { value: getByCategory("parastatal").length, label: "Parastatals" },
+    { value: lgas.length, label: "LGA Profiles" },
+    { value: "Free", label: "Always" },
+  ];
+
   return (
     <main className="max-w-4xl mx-auto px-4 py-12">
 
@@ -53,14 +51,14 @@ export default function AboutPage() {
         </div>
         <h1 className="font-display font-black text-4xl md:text-5xl mb-4">About This Directory</h1>
         <p className="text-gray-600 text-lg leading-relaxed max-w-2xl">
-          The Lagos State Government Directory is an independent public information platform that makes government contact information, officer details and civic resources freely accessible to every Nigerian.
+          Alausa Directory is an independent public information platform that makes information about Lagos State institutions and civic resources easier to find.
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-12">
         {stats.map(s => (
-          <div key={s.label} className="text-center py-4 px-2 rounded-xl"
+        <div key={s.label} className="text-center py-4 px-2 rounded-xl"
             style={{ background: "#1A3A8F", border: "2px solid #0D0D0D" }}>
             <p className="font-display font-black text-white text-2xl">{s.value}</p>
             <p className="text-white text-xs opacity-80 mt-1">{s.label}</p>
@@ -76,7 +74,7 @@ export default function AboutPage() {
         </div>
         <div className="bg-white p-6 md:p-8 space-y-4 text-gray-700 leading-relaxed">
           <p>
-            Lagos State is home to over 20 million people and operates one of the most complex systems of government in Africa — 23 ministries, dozens of agencies and parastatals, 20 local government areas and hundreds of principal officers. Yet finding a phone number, office address or the name of a commissioner has historically required multiple visits, phone calls and frustration.
+            Lagos State has a large network of ministries, agencies, parastatals and local governments. Finding an office address, public contact detail or the name of an officeholder can be difficult when information is spread across many sources.
           </p>
           <p>
             We built this directory to change that. Our mission is simple: <strong>every Lagos resident should be able to find their government in seconds.</strong> Whether you need to report environmental pollution to LASEPA, contact your LGA chairman, find out how to pay your land use charge, or know which hospital to call in an emergency — this platform gives you that information instantly, for free.
@@ -93,14 +91,14 @@ export default function AboutPage() {
           <h2 className="font-display font-bold text-xl mb-4">What We Cover</h2>
           <ul className="space-y-3 text-sm text-gray-700">
             {[
-              "All 23 Lagos State Government Ministries with commissioners and contacts",
-              "12 state agencies including LASEMA, LAMATA, LASEPA and LIRS",
-              "13 parastatals including LASU, LASUTH, LAWMA and Radio Lagos",
-              "All 20 Local Government Areas with history, maps and officers",
+              `${getByCategory("ministry").length} ministry records`,
+              `${getByCategory("agency").length} agency records`,
+              `${getByCategory("parastatal").length} parastatal records`,
+              `${lgas.length} Local Government Areas with history, maps and officers`,
               "Step-by-step guides for key government services",
               "Emergency and crisis hotlines for all sectors",
-              "2026 government events and public holiday calendar",
-              "Latest news and announcements from Lagos State MDAs",
+              "Government events and public holiday calendar",
+              "Headlines and links to reporting about Lagos State from multiple sources",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-green-600 mt-0.5 flex-shrink-0">✓</span>
@@ -127,8 +125,10 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-gray-400 mt-4">
-            Data is verified at the time of publication and reviewed regularly. If you find an error, please{" "}
+          <p className="text-xs text-gray-500 mt-4">
+            These are source types we prioritize. Directory records do not yet include a source and retrieval date for every individual claim, and should not be read as fully verified. Read our{" "}
+            <Link href="/methodology" className="underline" style={{ color: "#1A3A8F" }}>methodology</Link> or{" "}
+            <Link href="/changelog" className="underline" style={{ color: "#1A3A8F" }}>changelog</Link>. To report an error,{" "}
             <Link href="/contact" className="underline" style={{ color: "#1A3A8F" }}>contact us</Link>.
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function AboutPage() {
         style={{ background: "#FAFAF5", border: "2px dashed #0D0D0D" }}>
         <h3 className="font-bold text-sm mb-2">⚠️ Accuracy & Updates</h3>
         <p className="text-sm text-gray-600 leading-relaxed">
-          Government information changes frequently — officers are reassigned, phone numbers change and new agencies are created. We update this directory regularly but cannot guarantee real-time accuracy. Always verify critical information directly with the relevant ministry, agency or LGA office. Found something wrong?{" "}
+          Government information changes frequently — officers are reassigned, phone numbers change and institutions are reorganised. The date shown on a listing is the date stored with that record, not a guarantee that each detail was checked then. Always verify critical information directly with the relevant institution. Found something wrong?{" "}
           <Link href="/contact" className="underline font-medium" style={{ color: "#1A3A8F" }}>
             Report it here
           </Link>.

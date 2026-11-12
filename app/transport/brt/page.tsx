@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
-import FareCard from "@/components/transport/FareCard";
 import ServiceNotice from "@/components/transport/ServiceNotice";
 import { brtData } from "@/lib/transport/brt";
 import { serviceNotices } from "@/lib/transport/service-notices";
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
   title: "Lagos BRT | Routes, Fares & Terminals",
   description:
     "Complete Lagos BRT guide — 5 corridors, routes, fares, terminals and schedules. West Africa's largest Bus Rapid Transit network operated by LAMATA.",
-  alternates: { canonical: "https://www.lagosdirectory.gov.ng/transport/brt" },
+  alternates: { canonical: "https://www.alausadirectory.com/transport/brt" },
   keywords: [
     "Lagos BRT", "BRT Lagos routes", "Lagos BRT fares", "Lagos BRT schedule",
     "LAMATA BRT", "Lagos Island Ikorodu BRT", "Oshodi Abule Egba BRT",
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lagos BRT Routes, Fares & Terminals | LAMATA",
     description: "Routes, fares and schedules for all 5 Lagos BRT corridors — West Africa's largest BRT network.",
-    url: "https://www.lagosdirectory.gov.ng/transport/brt",
+    url: "https://www.alausadirectory.com/transport/brt",
   },
 };
 
@@ -193,15 +192,15 @@ export default function BRTPage() {
           <h2 className="font-display font-bold text-white text-xl mb-2">Contact LAMATA BRT</h2>
           <p className="text-white opacity-80 text-sm mb-4">For BRT complaints, lost property or service enquiries:</p>
           <div className="flex flex-wrap gap-3">
-            <a href="tel:01-2702778"
+            <a href="tel:+2349099526282"
               className="px-5 py-2.5 rounded-lg font-bold text-sm"
               style={{ background: "#F5C518", color: "#0D0D0D", border: "2px solid #0D0D0D" }}>
-              📞 01-2702778
+              📞 09099LAMATA (09099526282)
             </a>
-            <a href="https://lamata-ng.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://www.lamata-ng.com/contact/" target="_blank" rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-lg font-semibold text-sm"
               style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "2px solid rgba(255,255,255,0.3)" }}>
-              lamata-ng.com →
+              LAMATA contact page →
             </a>
           </div>
         </div>

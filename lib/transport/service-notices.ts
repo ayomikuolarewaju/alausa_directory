@@ -8,26 +8,32 @@ export type ServiceNotice = {
   affectedLines: string[];
   date: string;
   active: boolean;
+  sourceUrl?: string;
+  sourceLabel?: string;
 };
 
 export const serviceNotices: ServiceNotice[] = [
   {
     id: "sn-001",
-    type: "success",
-    title: "Blue Line — Full Service Operational",
-    body: "The Lagos Blue Line is running at full service across all 13 stations. Trains are running on schedule with no reported disruptions.",
+    type: "info",
+    title: "Blue Line — Current service and planned extension",
+    body: "LAMATA lists five operating stations on the Marina–Mile 2 service. FESTAC, Alakija and Trade Fair are planned to open by the end of February 2027; they are not currently in service.",
     affectedLines: ["Blue Line"],
-    date: "July 2026",
+    date: "23 October 2026",
     active: true,
+    sourceUrl: "https://www.lamata-ng.com/2026/10/23/lagos-blue-line-expansion-three-new-stations-to-open-by-february-2027/",
+    sourceLabel: "LAMATA expansion announcement",
   },
   {
     id: "sn-002",
     type: "info",
-    title: "Red Line — Construction Update",
-    body: "The Red Line is currently under construction. Trial runs are expected to begin in late 2025, with full commercial operations projected for 2026. Follow LAMATA official channels for updates.",
+    title: "Red Line — Published Timetable",
+    body: "LAMATA's published timetable lists nine Monday–Friday trips between Oyingbo and Agbado. A 24-trip expansion was planned for Q4 2026, but the timetable still lists nine and the expansion is not confirmed here.",
     affectedLines: ["Red Line"],
-    date: "July 2026",
+    date: "Checked 12 November 2026",
     active: true,
+    sourceUrl: "https://www.lamata-ng.com/our-schedule/redline-train-schedule/",
+    sourceLabel: "LAMATA Red Line timetable",
   },
   {
     id: "sn-003",
@@ -36,7 +42,7 @@ export const serviceNotices: ServiceNotice[] = [
     body: "Passengers on the Lagos Island–Ikorodu corridor may experience delays of 10–20 minutes during morning peak hours (7:00–9:00 AM) due to traffic on the approach to CMS. LAMATA is working with traffic management authorities to resolve this.",
     affectedLines: ["BRT Route 1"],
     date: "July 2026",
-    active: true,
+    active: false,
   },
   {
     id: "sn-004",
@@ -45,16 +51,18 @@ export const serviceNotices: ServiceNotice[] = [
     body: "Passengers are advised to check weather conditions before travelling on long-distance ferry routes (Marina–Badagry). Services may be suspended during adverse weather. Call 01-2700900 for real-time updates.",
     affectedLines: ["Ferry"],
     date: "July 2026",
-    active: true,
+    active: false,
   },
   {
     id: "sn-005",
     type: "info",
-    title: "New Fare Payment — Cowry Card",
-    body: "LAMATA has introduced the Cowry Card contactless payment system across all Blue Line stations and selected BRT terminals. Top up your card at any station ticket office or online at cowrycard.ng.",
-    affectedLines: ["Blue Line", "BRT"],
-    date: "June 2026",
+    title: "Cowry Card — purchase and fare payment",
+    body: "LAMATA describes Cowry as its smart-card fare-payment system. A July 2026 notice said cards are sold at designated bus stops and Blue and Red Line stations for ₦500. That is the card price, not a journey fare; check LAMATA for current reload options.",
+    affectedLines: ["Blue Line", "Red Line", "BRT"],
+    date: "27 July 2026",
     active: true,
+    sourceUrl: "https://www.lamata-ng.com/2026/07/27/lamata-warns-commuters-cash-fare-payments-on-regulated-bus-services-become-punishable-from-august-1/",
+    sourceLabel: "LAMATA Cowry card notice",
   },
 ];
 

@@ -1,23 +1,41 @@
 export type Station = {
   id: string;
   name: string;
-  zone: number;
+  zone?: number;
   interchange?: string[];
-  facilities: string[];
-  coordinates: { lat: number; lng: number };
+  facilities?: string[];
+  coordinates?: { lat: number; lng: number };
   isTerminal?: boolean;
-};
-
-export type ScheduleEntry = {
-  day: "Weekday" | "Saturday" | "Sunday";
-  firstTrain: string;
-  lastTrain: string;
-  frequency: string;
 };
 
 export type FareTier = {
   zones: string;
   fare: number;
+};
+
+type DirectionalSchedule = {
+  direction: string;
+  tripsPerDay: number;
+  firstDeparture: string;
+  lastDeparture: string;
+};
+
+type TimetableRow = [
+  trainNumber: string,
+  originDeparture: string,
+  stationOneArrival: string,
+  stationOneDeparture: string,
+  stationTwoArrival: string,
+  stationTwoDeparture: string,
+  stationThreeArrival: string,
+  stationThreeDeparture: string,
+  terminalArrival: string,
+];
+
+type DetailedSchedule = {
+  direction: string;
+  columns: string[];
+  rows: TimetableRow[];
 };
 
 export const blueLineData = {
@@ -26,142 +44,208 @@ export const blueLineData = {
   color: "#0057A8",
   status: "Operational" as const,
   operator: "Lagos Metropolitan Area Transport Authority (LAMATA)",
-  opened: "December 2022",
-  length: "27 km",
-  totalStations: 13,
-  type: "Light Rail / Metro",
+  opened: "September 2023",
+  currentRoute: "Marina–Mile 2",
+  totalStations: 5,
+  type: "Urban Rail",
   description:
-    "The Lagos Blue Line is Nigeria's first urban rail transit system, running from Marina on Lagos Island to Mile 2 on the Mainland. It runs along the waterfront of Lagos Harbour providing a fast, congestion-free alternative to road transport on one of Lagos's most congested corridors.",
+    "LAMATA's current published timetable covers passenger service between Marina and Mile 2 via five operating stations. Three additional stations have been announced for opening by the end of February 2027; they are not yet part of the current service.",
   overview: [
-    { label: "Line Length", value: "27 km" },
-    { label: "Stations", value: "13" },
-    { label: "Journey Time", value: "~35 minutes end to end" },
-    { label: "Max Speed", value: "100 km/h" },
-    { label: "Capacity", value: "800 passengers per train" },
-    { label: "Status", value: "Operational" },
+    { label: "Current Service", value: "Marina–Mile 2" },
+    { label: "Operating Stations", value: "5" },
+    { label: "Published Trips", value: "102 per day" },
+    { label: "Service Days", value: "Monday–Saturday" },
   ],
   stations: [
-    {
-      id: "marina",
-      name: "Marina",
-      zone: 1,
-      interchange: ["Ferry Terminal", "Bus Connections"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Disability Access"],
-      coordinates: { lat: 6.4509, lng: 3.3960 },
-      isTerminal: true,
-    },
-    {
-      id: "national-theatre",
-      name: "National Theatre",
-      zone: 1,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.4698, lng: 3.3764 },
-    },
-    {
-      id: "ebute-metta",
-      name: "Ebute Metta",
-      zone: 2,
-      interchange: ["NRC Railway"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV"],
-      coordinates: { lat: 6.4784, lng: 3.3700 },
-    },
-    {
-      id: "oyingbo",
-      name: "Oyingbo",
-      zone: 2,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.4900, lng: 3.3750 },
-    },
-    {
-      id: "iddo",
-      name: "Iddo",
-      zone: 2,
-      interchange: ["NRC Terminus"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Parking"],
-      coordinates: { lat: 6.4744, lng: 3.3828 },
-    },
-    {
-      id: "ijora",
-      name: "Ijora",
-      zone: 2,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.4620, lng: 3.3650 },
-    },
-    {
-      id: "iganmu",
-      name: "Iganmu",
-      zone: 2,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.4550, lng: 3.3490 },
-    },
-    {
-      id: "orile",
-      name: "Orile",
-      zone: 3,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV"],
-      coordinates: { lat: 6.4700, lng: 3.3400 },
-    },
-    {
-      id: "oshodi",
-      name: "Oshodi",
-      zone: 3,
-      interchange: ["BRT Hub", "Bus Connections"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Disability Access", "Retail"],
-      coordinates: { lat: 6.5570, lng: 3.3480 },
-    },
-    {
-      id: "airport",
-      name: "Airport Road",
-      zone: 3,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV"],
-      coordinates: { lat: 6.5750, lng: 3.3210 },
-    },
-    {
-      id: "ikeja",
-      name: "Ikeja",
-      zone: 3,
-      interchange: ["Bus Connections", "Taxi"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Parking", "Disability Access"],
-      coordinates: { lat: 6.5950, lng: 3.3381 },
-    },
-    {
-      id: "agege",
-      name: "Agege",
-      zone: 4,
-      facilities: ["Ticket Office", "Waiting Lounge", "Security"],
-      coordinates: { lat: 6.6193, lng: 3.3192 },
-    },
-    {
-      id: "mile-2",
-      name: "Mile 2",
-      zone: 4,
-      interchange: ["BRT", "Bus Connections", "Danfo"],
-      facilities: ["Ticket Office", "Waiting Lounge", "Security", "CCTV", "Parking", "Disability Access"],
-      coordinates: { lat: 6.4728, lng: 3.2944 },
-      isTerminal: true,
-    },
+    { id: "marina", name: "Marina", isTerminal: true },
+    { id: "national-theatre", name: "National Theatre" },
+    { id: "iganmu", name: "Iganmu" },
+    { id: "alaba", name: "Alaba" },
+    { id: "mile-2", name: "Mile 2", isTerminal: true },
   ] as Station[],
-
-  schedule: [
-    { day: "Weekday",  firstTrain: "05:30",  lastTrain: "22:00",  frequency: "Every 10–15 minutes" },
-    { day: "Saturday", firstTrain: "06:00",  lastTrain: "21:00",  frequency: "Every 15–20 minutes" },
-    { day: "Sunday",   firstTrain: "07:00",  lastTrain: "20:00",  frequency: "Every 20–30 minutes" },
-  ] as ScheduleEntry[],
-
-  fares: [
-    { zones: "Zone 1–2 (1–3 stops)",  fare: 150 },
-    { zones: "Zone 1–3 (4–7 stops)",  fare: 250 },
-    { zones: "Zone 1–4 (8–13 stops)", fare: 350 },
-    { zones: "Monthly Pass",           fare: 7500 },
-    { zones: "Student Monthly",        fare: 4500 },
-  ] as FareTier[],
-
-  rules: [
-    "No food or drinks on trains",
-    "No smoking in stations or on trains",
-    "Keep noise levels low — use headphones",
-    "Pregnant women, elderly and disabled passengers have priority seating",
-    "Children under 5 travel free with a paying adult",
-    "Tokens and cards accepted at all stations",
+  schedules: [
+    {
+      direction: "Marina to Mile 2",
+      tripsPerDay: 51,
+      firstDeparture: "05:30",
+      lastDeparture: "21:50",
+    },
+    {
+      direction: "Mile 2 to Marina",
+      tripsPerDay: 51,
+      firstDeparture: "05:40",
+      lastDeparture: "21:52",
+    },
+  ] as DirectionalSchedule[],
+  detailedSchedules: [
+    {
+      direction: "Marina to Mile 2",
+      columns: [
+        "Train No.",
+        "Marina departure",
+        "National Theatre arrival",
+        "National Theatre departure",
+        "Iganmu arrival",
+        "Iganmu departure",
+        "Alaba arrival",
+        "Alaba departure",
+        "Mile 2 arrival",
+      ],
+      rows: [
+        ["02101 **", "-", "-", "05:30:00", "05:33:44", "05:34:44", "05:37:58", "05:38:58", "05:40:56"],
+        ["01301 **", "-", "-", "05:46:16", "05:50:00", "-", "-", "-", "-"],
+        ["1301", "-", "-", "-", "-", "06:00:00", "06:03:14", "06:04:14", "06:06:12"],
+        ["1203", "06:00:00", "06:06:04", "06:07:04", "06:10:48", "06:11:48", "06:15:02", "06:16:02", "06:18:00"],
+        ["2103", "06:23:00", "06:29:04", "06:30:04", "06:33:48", "06:34:48", "06:38:02", "06:39:02", "06:41:00"],
+        ["2403", "06:34:48", "06:40:52", "06:41:52", "06:45:36", "06:46:36", "06:49:50", "06:50:50", "06:52:48"],
+        ["1303", "06:57:56", "07:04:00", "07:05:00", "07:08:44", "07:09:44", "07:12:58", "07:13:58", "07:15:56"],
+        ["1205", "07:09:44", "07:15:48", "07:16:48", "07:20:32", "07:21:32", "07:24:46", "07:25:46", "07:27:44"],
+        ["2105", "07:32:44", "07:38:48", "07:39:48", "07:43:32", "07:44:32", "07:47:46", "07:48:46", "07:50:44"],
+        ["2405", "07:44:32", "07:50:36", "07:51:36", "07:55:20", "07:56:20", "07:59:34", "08:00:34", "08:02:32"],
+        ["1305", "08:07:40", "08:13:44", "08:14:44", "08:18:28", "08:19:28", "08:22:42", "08:23:42", "08:25:40"],
+        ["1207", "08:19:28", "08:25:32", "08:26:32", "08:30:16", "08:31:16", "08:34:30", "08:35:30", "08:37:28"],
+        ["2107", "08:42:28", "08:48:32", "08:49:32", "08:53:16", "08:54:16", "08:57:30", "08:58:30", "09:00:28"],
+        ["2407", "08:54:16", "09:00:20", "09:01:20", "09:05:04", "09:06:04", "09:09:18", "09:10:18", "09:12:16"],
+        ["1307", "09:17:24", "09:23:28", "09:24:28", "09:28:12", "09:29:12", "09:32:26", "09:33:26", "09:35:24"],
+        ["1209", "09:30:00", "09:36:04", "09:37:04", "09:40:48", "09:41:48", "09:45:02", "09:46:02", "09:48:00"],
+        ["2109 **", "09:58:00", "10:04:04", "10:05:04", "10:08:48", "10:09:48", "10:13:02", "10:14:02", "10:16:00"],
+        ["1211 **", "10:26:00", "10:32:04", "10:33:04", "10:36:48", "10:37:48", "10:41:02", "10:42:02", "10:44:00"],
+        ["2111 **", "10:54:00", "11:00:04", "11:01:04", "11:04:48", "11:05:48", "11:09:02", "11:10:02", "11:12:00"],
+        ["1213 **", "11:22:00", "11:28:04", "11:29:04", "11:32:48", "11:33:48", "11:37:02", "11:38:02", "11:40:00"],
+        ["2113 **", "11:50:00", "11:56:04", "11:57:04", "12:00:48", "12:01:48", "12:05:02", "12:06:02", "12:08:00"],
+        ["1215 **", "12:18:00", "12:24:04", "12:25:04", "12:28:48", "12:29:48", "12:33:02", "12:34:02", "12:36:00"],
+        ["2115 **", "12:46:00", "12:52:04", "12:53:04", "12:56:48", "12:57:48", "13:01:02", "13:02:02", "13:04:00"],
+        ["1217 **", "13:14:00", "13:20:04", "13:21:04", "13:24:48", "13:25:48", "13:29:02", "13:30:02", "13:32:00"],
+        ["2117 **", "13:42:00", "13:48:04", "13:49:04", "13:52:48", "13:53:48", "13:57:02", "13:58:02", "14:00:00"],
+        ["1219 **", "14:10:00", "14:16:04", "14:17:04", "14:20:48", "14:21:48", "14:25:02", "14:26:02", "14:28:00"],
+        ["2119 **", "14:38:00", "14:44:04", "14:45:04", "14:48:48", "14:49:48", "14:53:02", "14:54:02", "14:56:00"],
+        ["1221 **", "15:06:00", "15:12:04", "15:13:04", "15:16:48", "15:17:48", "15:21:02", "15:22:02", "15:24:00"],
+        ["2121 **", "15:30:00", "15:36:04", "15:37:04", "15:40:48", "15:41:48", "15:45:02", "15:46:02", "15:48:00"],
+        ["2409", "15:41:48", "15:47:52", "15:48:52", "15:52:36", "15:53:36", "15:56:50", "15:57:50", "15:59:48"],
+        ["1309", "16:04:56", "16:11:00", "16:12:00", "16:15:44", "16:16:44", "16:19:58", "16:20:58", "16:22:56"],
+        ["1223", "16:16:44", "16:22:48", "16:23:48", "16:27:32", "16:28:32", "16:31:46", "16:32:46", "16:34:44"],
+        ["2123", "16:39:44", "16:45:48", "16:46:48", "16:50:32", "16:51:32", "16:54:46", "16:55:46", "16:57:44"],
+        ["2411", "16:51:32", "16:57:36", "16:58:36", "17:02:20", "17:03:20", "17:06:34", "17:07:34", "17:09:32"],
+        ["1311", "17:14:40", "17:20:44", "17:21:44", "17:25:28", "17:26:28", "17:29:42", "17:30:42", "17:32:40"],
+        ["1225", "17:26:28", "17:32:32", "17:33:32", "17:37:16", "17:38:16", "17:41:30", "17:42:30", "17:44:28"],
+        ["2125", "17:49:28", "17:55:32", "17:56:32", "18:00:16", "18:01:16", "18:04:30", "18:05:30", "18:07:28"],
+        ["2413", "18:01:16", "18:07:20", "18:08:20", "18:12:04", "18:13:04", "18:16:18", "18:17:18", "18:19:16"],
+        ["1313", "18:24:24", "18:30:28", "18:31:28", "18:35:12", "18:36:12", "18:39:26", "18:40:26", "18:42:24"],
+        ["1227", "18:36:12", "18:42:16", "18:43:16", "18:47:00", "18:48:00", "18:51:14", "18:52:14", "18:54:12"],
+        ["2127", "18:59:12", "19:05:16", "19:06:16", "19:10:00", "19:11:00", "19:14:14", "19:15:14", "19:17:12"],
+        ["2415", "19:11:00", "19:17:04", "19:18:04", "19:21:48", "19:22:48", "19:26:02", "19:27:02", "19:29:00"],
+        ["1315", "19:34:08", "19:40:12", "19:41:12", "19:44:56", "19:45:56", "19:49:10", "19:50:10", "19:52:08"],
+        ["1229", "19:45:56", "19:52:00", "19:53:00", "19:56:44", "19:57:44", "20:00:58", "20:01:58", "20:03:56"],
+        ["2129", "20:08:56", "20:15:00", "20:16:00", "20:19:44", "20:20:44", "20:23:58", "20:24:58", "20:26:56"],
+        ["2417", "20:20:44", "20:26:48", "20:27:48", "20:31:32", "20:32:32", "20:35:46", "20:36:46", "20:38:44"],
+        ["1317", "20:43:52", "20:49:56", "20:50:56", "20:54:40", "20:55:40", "20:58:54", "20:59:54", "21:01:52"],
+        ["1231", "20:56:00", "21:02:04", "21:03:04", "21:06:48", "21:07:48", "21:11:02", "21:12:02", "21:14:00"],
+        ["2131", "21:19:00", "21:25:04", "21:26:04", "21:29:48", "21:30:48", "21:34:02", "21:35:02", "21:37:00"],
+        ["02419 **", "21:31:44", "21:37:48", "-", "-", "-", "-", "-", "-"],
+        ["01233 **", "21:50:00", "21:56:04", "-", "-", "-", "-", "-", "-"],
+      ],
+    },
+    {
+      direction: "Mile 2 to Marina",
+      columns: [
+        "Train No.",
+        "Mile 2 departure",
+        "Alaba arrival",
+        "Alaba departure",
+        "Iganmu arrival",
+        "Iganmu departure",
+        "National Theatre arrival",
+        "National Theatre departure",
+        "Marina arrival",
+      ],
+      rows: [
+        ["01202 **", "-", "-", "-", "-", "-", "-", "05:40:00", "05:46:04"],
+        ["2402", "-", "-", "-", "-", "-", "-", "06:00:00", "06:06:04"],
+        ["2102", "06:00:00", "06:01:58", "06:02:58", "06:06:12", "06:07:12", "06:10:56", "06:11:56", "06:18:00"],
+        ["1204", "06:23:00", "06:24:58", "06:25:58", "06:29:12", "06:30:12", "06:33:56", "06:34:56", "06:41:00"],
+        ["1302", "06:34:56", "06:36:54", "06:37:54", "06:41:08", "06:42:08", "06:45:52", "06:46:52", "06:52:56"],
+        ["2404", "06:57:48", "06:59:46", "07:00:46", "07:04:00", "07:05:00", "07:08:44", "07:09:44", "07:15:48"],
+        ["2104", "07:09:44", "07:11:42", "07:12:42", "07:15:56", "07:16:56", "07:20:40", "07:21:40", "07:27:44"],
+        ["1206", "07:32:44", "07:34:42", "07:35:42", "07:38:56", "07:39:56", "07:43:40", "07:44:40", "07:50:44"],
+        ["1304", "07:44:40", "07:46:38", "07:47:38", "07:50:52", "07:51:52", "07:55:36", "07:56:36", "08:02:40"],
+        ["2406", "08:07:32", "08:09:30", "08:10:30", "08:13:44", "08:14:44", "08:18:28", "08:19:28", "08:25:32"],
+        ["2106", "08:19:28", "08:21:26", "08:22:26", "08:25:40", "08:26:40", "08:30:24", "08:31:24", "08:37:28"],
+        ["1208", "08:42:28", "08:44:26", "08:45:26", "08:48:40", "08:49:40", "08:53:24", "08:54:24", "09:00:28"],
+        ["1306", "08:54:24", "08:56:22", "08:57:22", "09:00:36", "09:01:36", "09:05:20", "09:06:20", "09:12:24"],
+        ["2408", "09:17:16", "09:19:14", "09:20:14", "09:23:28", "09:24:28", "09:28:12", "09:29:12", "09:35:16"],
+        ["2108", "09:30:00", "09:31:58", "09:32:58", "09:36:12", "09:37:12", "09:40:56", "09:41:56", "09:48:00"],
+        ["1210 **", "09:58:00", "09:59:58", "10:00:58", "10:04:12", "10:05:12", "10:08:56", "10:09:56", "10:16:00"],
+        ["2110 **", "10:26:00", "10:27:58", "10:28:58", "10:32:12", "10:33:12", "10:36:56", "10:37:56", "10:44:00"],
+        ["1212 **", "10:54:00", "10:55:58", "10:56:58", "11:00:12", "11:01:12", "11:04:56", "11:05:56", "11:12:00"],
+        ["2112 **", "11:22:00", "11:23:58", "11:24:58", "11:28:12", "11:29:12", "11:32:56", "11:33:56", "11:40:00"],
+        ["1214 **", "11:50:00", "11:51:58", "11:52:58", "11:56:12", "11:57:12", "12:00:56", "12:01:56", "12:08:00"],
+        ["2114 **", "12:18:00", "12:19:58", "12:20:58", "12:24:12", "12:25:12", "12:28:56", "12:29:56", "12:36:00"],
+        ["1216 **", "12:46:00", "12:47:58", "12:48:58", "12:52:12", "12:53:12", "12:56:56", "12:57:56", "13:04:00"],
+        ["2116 **", "13:14:00", "13:15:58", "13:16:58", "13:20:12", "13:21:12", "13:24:56", "13:25:56", "13:32:00"],
+        ["1218 **", "13:42:00", "13:43:58", "13:44:58", "13:48:12", "13:49:12", "13:52:56", "13:53:56", "14:00:00"],
+        ["2118 **", "14:10:00", "14:11:58", "14:12:58", "14:16:12", "14:17:12", "14:20:56", "14:21:56", "14:28:00"],
+        ["1220 **", "14:38:00", "14:39:58", "14:40:58", "14:44:12", "14:45:12", "14:48:56", "14:49:56", "14:56:00"],
+        ["2120 **", "15:06:00", "15:07:58", "15:08:58", "15:12:12", "15:13:12", "15:16:56", "15:17:56", "15:24:00"],
+        ["1222 **", "15:30:00", "15:31:58", "15:32:58", "15:36:12", "15:37:12", "15:40:56", "15:41:56", "15:48:00"],
+        ["1308", "15:41:56", "15:43:54", "15:44:54", "15:48:08", "15:49:08", "15:52:52", "15:53:52", "15:59:56"],
+        ["2410", "16:04:48", "16:06:46", "16:07:46", "16:11:00", "16:12:00", "16:15:44", "16:16:44", "16:22:48"],
+        ["2122", "16:16:44", "16:18:42", "16:19:42", "16:22:56", "16:23:56", "16:27:40", "16:28:40", "16:34:44"],
+        ["1224", "16:39:44", "16:41:42", "16:42:42", "16:45:56", "16:46:56", "16:50:40", "16:51:40", "16:57:44"],
+        ["1310", "16:51:40", "16:53:38", "16:54:38", "16:57:52", "16:58:52", "17:02:36", "17:03:36", "17:09:40"],
+        ["2412", "17:14:32", "17:16:30", "17:17:30", "17:20:44", "17:21:44", "17:25:28", "17:26:28", "17:32:32"],
+        ["2124", "17:26:28", "17:28:26", "17:29:26", "17:32:40", "17:33:40", "17:37:24", "17:38:24", "17:44:28"],
+        ["1226", "17:49:28", "17:51:26", "17:52:26", "17:55:40", "17:56:40", "18:00:24", "18:01:24", "18:07:28"],
+        ["1312", "18:01:24", "18:03:22", "18:04:22", "18:07:36", "18:08:36", "18:12:20", "18:13:20", "18:19:24"],
+        ["2414", "18:24:16", "18:26:14", "18:27:14", "18:30:28", "18:31:28", "18:35:12", "18:36:12", "18:42:16"],
+        ["2126", "18:36:12", "18:38:10", "18:39:10", "18:42:24", "18:43:24", "18:47:08", "18:48:08", "18:54:12"],
+        ["1228", "18:59:12", "19:01:10", "19:02:10", "19:05:24", "19:06:24", "19:10:08", "19:11:08", "19:17:12"],
+        ["1314", "19:11:08", "19:13:06", "19:14:06", "19:17:20", "19:18:20", "19:22:04", "19:23:04", "19:29:08"],
+        ["2416", "19:34:00", "19:35:58", "19:36:58", "19:40:12", "19:41:12", "19:44:56", "19:45:56", "19:52:00"],
+        ["2128", "19:45:56", "19:47:54", "19:48:54", "19:52:08", "19:53:08", "19:56:52", "19:57:52", "20:03:56"],
+        ["1230", "20:08:56", "20:10:54", "20:11:54", "20:15:08", "20:16:08", "20:19:52", "20:20:52", "20:26:56"],
+        ["1316", "20:20:52", "20:22:50", "20:23:50", "20:27:04", "20:28:04", "20:31:48", "20:32:48", "20:38:52"],
+        ["2418", "20:43:44", "20:45:42", "20:46:42", "20:49:56", "20:50:56", "20:54:40", "20:55:40", "21:01:44"],
+        ["2130", "20:56:00", "20:57:58", "20:58:58", "21:02:12", "21:03:12", "21:06:56", "21:07:56", "21:14:00"],
+        ["1232", "21:19:00", "21:20:58", "21:21:58", "21:25:12", "21:26:12", "21:29:56", "21:30:56", "21:37:00"],
+        ["01318 **", "21:31:52", "21:33:50", "21:34:50", "21:38:04", "21:39:04", "21:42:48", "-", "-"],
+        ["02132 **", "21:42:00", "21:43:58", "21:44:58", "21:48:12", "21:49:12", "21:52:56", "-", "-"],
+      ],
+    },
+  ] as DetailedSchedule[],
+  serviceDays: "Monday–Saturday",
+  peakHeadway: "8–12 minutes",
+  plannedStations: ["FESTAC", "Alakija", "Trade Fair"],
+  plannedOpening: "By the end of February 2027",
+  checkedAt: "12 November 2026",
+  sources: [
+    {
+      label: "LAMATA Blue Line timetable",
+      url: "https://www.lamata-ng.com/blue-line-train-schedule/",
+      detail:
+        "Current five-stop route, 102 daily trips, operating days, directional service hours and station-by-station times. The page advertises 51 trips each way, but its embedded timetable data has 51 Marina-to-Mile 2 rows and 50 Mile 2-to-Marina rows.",
+    },
+    {
+      label: "LAMATA Blue Line expansion announcement (23 October 2026)",
+      url: "https://www.lamata-ng.com/2026/10/23/lagos-blue-line-expansion-three-new-stations-to-open-by-february-2027/",
+      detail:
+        "Confirms five currently operating stations and identifies FESTAC, Alakija and Trade Fair as planned additions by the end of February 2027.",
+    },
+    {
+      label: "LAMATA electronic fare payment information",
+      url: "https://www.lamata-ng.com/electronic-fare-payment-system/",
+      detail: "LAMATA overview of its Cowry smart-card electronic fare system.",
+    },
+    {
+      label: "LAMATA Cowry card and fare announcement (27 July 2026)",
+      url: "https://www.lamata-ng.com/2026/07/27/lamata-warns-commuters-cash-fare-payments-on-regulated-bus-services-become-punishable-from-august-1/",
+      detail:
+        "States that Cowry cards can be purchased at Blue and Red Line stations for ₦500; this is a card price, not a Blue Line journey fare.",
+    },
+    {
+      label: "LAMATA off-peak fare announcement (10 August 2024)",
+      url: "https://www.lamata-ng.com/2024/08/10/blue-line-upscale-to-72-trips-per-day-introduces-25-fare-discount-for-off-peak-travels/",
+      detail:
+        "Historical announcement of a 25% off-peak discount; it does not confirm today's fare amounts or whether the discount remains in effect.",
+    },
   ],
 };

@@ -42,6 +42,12 @@ export default function ServiceNotice({ notices, filterLines, title = "Service N
                   ))}
                   <span className="text-xs text-gray-400 ml-auto">{notice.date}</span>
                 </div>
+                {notice.sourceUrl && (
+                  <a href={notice.sourceUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-block mt-2 text-xs font-semibold underline" style={{ color: "#1A3A8F" }}>
+                    Source: {notice.sourceLabel ?? "LAMATA"}
+                  </a>
+                )}
               </div>
             </div>
           </div>

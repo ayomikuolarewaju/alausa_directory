@@ -4,17 +4,17 @@ import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.lagosdirectory.gov.ng";
+const BASE_URL = "https://www.alausadirectory.com";
 
 export const metadata: Metadata = {
   title: "Lagos Directory | Alausa Secretariat — Ministries, Agencies & Parastatals",
   description:
-    "Lagos Directory — the definitive Alausa Secretariat and Lagos State Government directory. Find all ministries, agencies, parastatals and 20 LGAs with principal officers, addresses and phone numbers.",
+    "An independent directory of Lagos State ministries, agencies, parastatals and local governments, with officeholders, addresses and contact details.",
   alternates: { canonical: BASE_URL },
   openGraph: {
     title: "Lagos Directory | Alausa Secretariat",
     description:
-      "The definitive Lagos Directory — Alausa Secretariat offices, Lagos State ministries, agencies, parastatals and all 20 LGAs.",
+      "An independent directory of Lagos State ministries, agencies, parastatals and local governments.",
     url: BASE_URL,
   },
 };
@@ -25,11 +25,11 @@ const websiteJsonLd = {
   name: "Lagos Directory | Alausa Secretariat",
   url: BASE_URL,
   description:
-    "The definitive Alausa Secretariat and Lagos State Government directory covering all ministries, agencies, parastatals and LGAs.",
+    "An independent public directory covering Lagos State ministries, agencies, parastatals and local governments.",
   publisher: {
-    "@type": "GovernmentOrganization",
-    name: "Lagos State Government",
-    url: "https://lagosstate.gov.ng",
+    "@type": "Organization",
+    name: "Alausa Directory",
+    url: BASE_URL,
   },
   potentialAction: {
     "@type": "SearchAction",
@@ -39,31 +39,6 @@ const websiteJsonLd = {
     },
     "query-input": "required name=search_term_string",
   },
-};
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Ministries",
-      item: `${BASE_URL}/ministries`,
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Agencies",
-      item: `${BASE_URL}/agencies`,
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "Parastatals",
-      item: `${BASE_URL}/parastatals`,
-    },
-  ],
 };
 
 export default async function Home({
@@ -83,8 +58,7 @@ export default async function Home({
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c") }} />
 
       <main>
         {/* Hero */}
@@ -95,11 +69,11 @@ export default async function Home({
               Lagos State 
             </div>
             <h1 className="font-display font-black text-white text-4xl md:text-6xl leading-tight mb-4">
-              Official Government<br />
+              Independent Civic<br />
               <span style={{ color: "#F5C518" }}>Directory</span>
             </h1>
             <p className="text-blue-200 text-lg mb-10 max-w-xl">
-              The definitive Alausa Secretariat guide — find all Lagos State ministries, agencies, parastatals and LGAs with principal officers, addresses and contact details.
+              Find Lagos State ministries, agencies, parastatals and local governments, with officeholders, addresses and contact details.
             </p>
             <SearchBar />
           </div>
@@ -118,6 +92,10 @@ export default async function Home({
             ))}
           </div>
         </section>
+
+        <p className="max-w-7xl mx-auto px-4 pt-5 text-sm text-gray-600">
+          Latest review activity: <time dateTime="2026-11-12">12 November 2026</time>. This is not a full verification date for every record; individual pages show their source and review status.
+        </p>
 
         {/* Search results */}
         {query && (
@@ -175,7 +153,7 @@ export default async function Home({
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
               <div>
                 <p className="font-display text-white text-xl font-bold mb-1">Lagos Directory | Alausa Secretariat</p>
-                <p className="text-gray-400 text-sm max-w-xs">The definitive Alausa Secretariat and Lagos State Government directory — free, independent and updated regularly.</p>
+                <p className="text-gray-400 text-sm max-w-xs">An independent public directory of Lagos State government institutions and civic information.</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-sm">
                 <div>
@@ -192,14 +170,14 @@ export default async function Home({
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs uppercase tracking-widest mb-2 font-semibold">Legal</p>
-                  {["/about", "/contact", "/disclaimer", "/privacy"].map(href => (
+                  {["/about", "/methodology", "/changelog", "/contact", "/disclaimer", "/privacy"].map(href => (
                     <Link key={href} href={href} className="block text-gray-400 hover:text-white capitalize py-0.5">{href.replace("/", "")}</Link>
                   ))}
                 </div>
               </div>
             </div>
             <div style={{ borderTop: "1px solid #222" }} className="pt-5 flex flex-col md:flex-row items-center justify-between gap-2">
-              <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Lagos State Government Directory. Independent platform — not affiliated with Lagos State Government.</p>
+              <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Alausa Directory. Independent platform — not affiliated with Lagos State Government.</p>
               <div className="flex gap-4 text-xs text-gray-600">
                 <Link href="/disclaimer" className="hover:text-gray-400">Disclaimer</Link>
                 <Link href="/privacy" className="hover:text-gray-400">Privacy Policy</Link>
