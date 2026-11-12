@@ -1,7 +1,8 @@
-import { getLCDAById, lcdas } from "@/lib/lcdaData";
+import { getLCDAById } from "@/lib/data-access";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 
 const BASE_URL = "https://www.alausadirectory.com"; // Also registered: alausadirectory.com.ng — both point to same site
 
@@ -11,13 +12,10 @@ const zoneColors = {
   Suburban: "#1B7A3E",
 };
 
-export async function generateStaticParams() {
-  return lcdas.map(l => ({ id: l.id }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const lcda = getLCDAById(id);
+  const lcda = await getLCDAById(id);
   if (!lcda) return {};
   const title = `${lcda.name} — ${lcda.parentLgaName} LGA`;
   const description = `${lcda.bio.slice(0, 160)}...`;
@@ -41,8 +39,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export default async function LCDADetailPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
-  const lcda = getLCDAById(id);
+  const lcda = await getLCDAById(id);
   if (!lcda) notFound();
 
   const color = zoneColors[lcda.zone];

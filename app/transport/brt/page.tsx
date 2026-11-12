@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { brtData } from "@/lib/transport/brt";
-import { serviceNotices } from "@/lib/transport/service-notices";
+import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos BRT | Routes, Fares & Terminals",
@@ -29,8 +29,12 @@ const routeColors: Record<string, string> = {
   "brt-5": "#D42B2B",
 };
 
-export default function BRTPage() {
-  const d = brtData;
+export default async function BRTPage() {
+  await connection();
+  const [d, serviceNotices] = await Promise.all([
+    getTransportDataset("brt"),
+    getServiceNotices(),
+  ]);
   return (
     <main>
       <TransportHero

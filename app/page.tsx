@@ -1,4 +1,6 @@
-import { searchEntities, getByCategory } from "@/lib/data";
+import { searchEntityList } from "@/lib/data";
+import { getEntities } from "@/lib/data-access";
+import { connection } from "next/server";
 import EntityCard from "@/components/EntityCard";
 import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
@@ -48,12 +50,14 @@ export default async function Home({
 }) {
   const params = await searchParams;
   const query = params?.q || "";
-  const results = query ? searchEntities(query) : [];
+  await connection();
+  const allEntities = await getEntities();
+  const results = query ? searchEntityList(allEntities, query) : [];
 
   const stats = [
-    { label: "Ministries", count: getByCategory("ministry").length, color: "#1A3A8F", href: "/ministries" },
-    { label: "Agencies", count: getByCategory("agency").length, color: "#D42B2B", href: "/agencies" },
-    { label: "Parastatals", count: getByCategory("parastatal").length, color: "#1B7A3E", href: "/parastatals" },
+    { label: "Ministries", count: allEntities.filter((entity) => entity.category === "ministry").length, color: "#1A3A8F", href: "/ministries" },
+    { label: "Agencies", count: allEntities.filter((entity) => entity.category === "agency").length, color: "#D42B2B", href: "/agencies" },
+    { label: "Parastatals", count: allEntities.filter((entity) => entity.category === "parastatal").length, color: "#1B7A3E", href: "/parastatals" },
   ];
 
   return (
@@ -126,7 +130,7 @@ export default async function Home({
               { category: "agency" as const, label: "Agencies", color: "#D42B2B", href: "/agencies" },
               { category: "parastatal" as const, label: "Parastatals", color: "#1B7A3E", href: "/parastatals" },
             ].map(({ category, label, color, href }) => {
-              const items = getByCategory(category).slice(0, 3);
+              const items = allEntities.filter((entity) => entity.category === category).slice(0, 3);
               return (
                 <section key={category} className="max-w-7xl mx-auto px-4 py-14">
                   <div className="flex items-center justify-between mb-8">

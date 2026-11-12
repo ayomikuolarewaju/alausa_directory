@@ -1,4 +1,5 @@
-import { getByCategory } from "@/lib/data";
+import { getEntitiesByCategory } from "@/lib/data-access";
+import { connection } from "next/server";
 import EntityCard from "@/components/EntityCard";
 import type { Metadata } from "next";
 
@@ -15,8 +16,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AgenciesPage() {
-  const items = getByCategory("agency");
+export default async function AgenciesPage() {
+  await connection();
+  const items = await getEntitiesByCategory("agency");
   const needsCheck = items.filter(e => e.needsVerification).length;
 
   return (

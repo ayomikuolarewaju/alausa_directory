@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import LineCard from "@/components/transport/LineCard";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { serviceNotices } from "@/lib/transport/service-notices";
+import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 import TransportHero from "@/components/transport/Hero";
 
 export const metadata: Metadata = {
@@ -16,48 +17,56 @@ export const metadata: Metadata = {
   },
 };
 
-const lines = [
-  {
-    name: "Blue Line",
-    description: "Current passenger service runs between Marina and Mile 2 through five operating stations. Three more stations are planned to open by the end of February 2027.",
-    color: "#0057A8",
-    status: "Operational",
-    stats: [
-      { label: "Operating stations", value: "5" },
-      { label: "Trips/day", value: "102" },
-      { label: "Service days", value: "Mon–Sat" },
-    ],
-    href: "/transport/rail/blue-line",
-  },
-  {
-    name: "Red Line",
-    description: "LAMATA's published weekday passenger timetable covers Oyingbo–Agbado. The 37 km Agbado–Marina route is a longer-term corridor plan.",
-    color: "#CC1F1F",
-    status: "Operational",
-    stats: [
-      { label: "Timetabled stops", value: "8" },
-      { label: "Daily trains", value: "9" },
-      { label: "Schedule", value: "Mon–Fri" },
-    ],
-    href: "/transport/rail/red-line",
-  },
-];
-
-export default function RailPage() {
+export default async function RailPage() {
+  await connection();
+  const [blueLine, redLine, serviceNotices] = await Promise.all([
+    getTransportDataset("blue-line"),
+    getTransportDataset("red-line"),
+    getServiceNotices(),
+  ]);
+  const blueTrips = blueLine.schedules.reduce((total, schedule) => total + schedule.tripsPerDay, 0);
+  const redTrips = redLine.schedules.reduce((total, schedule) => total + schedule.trains.length, 0);
+  const totalStations = blueLine.stations.length + redLine.stations.length;
+  const lines = [
+    {
+      name: blueLine.name,
+      description: blueLine.description,
+      color: blueLine.color,
+      status: blueLine.status,
+      stats: [
+        { label: "Operating stations", value: String(blueLine.stations.length) },
+        { label: "Trips/day", value: String(blueTrips) },
+        { label: "Service days", value: blueLine.serviceDays },
+      ],
+      href: "/transport/rail/blue-line",
+    },
+    {
+      name: redLine.name,
+      description: redLine.description,
+      color: redLine.color,
+      status: "Operational",
+      stats: [
+        { label: "Timetabled stops", value: String(redLine.stations.length) },
+        { label: "Daily trains", value: String(redTrips) },
+        { label: "Schedule", value: "Weekdays" },
+      ],
+      href: "/transport/rail/red-line",
+    },
+  ];
   return (
     <main>
       <TransportHero
         title="Lagos Rail"
-        subtitle="Current services: Blue Line Marina–Mile 2 (five stations, Monday–Saturday) and Red Line Oyingbo–Agbado (eight stops, Monday–Friday). Announced extensions are shown separately from operating service."
+        subtitle={`Current services: Blue Line ${blueLine.currentRoute} (${blueLine.stations.length} stations, ${blueLine.serviceDays}) and Red Line ${redLine.overview[0]?.value ?? "published passenger service"} (${redLine.stations.length} stops). Announced extensions are shown separately from operating service.`}
         badge="LAMATA Rail Services"
         color="#0D0D2B"
         backHref="/transport"
         backLabel="All Transport"
         stats={[
           { label: "Rail Lines", value: "2" },
-          { label: "Current stops", value: "13" },
-          { label: "Blue Line trips", value: "102/day, Mon–Sat" },
-          { label: "Red Line trips", value: "9/day, Mon–Fri" },
+          { label: "Current stops", value: String(totalStations) },
+          { label: "Blue Line trips", value: `${blueTrips}/day, ${blueLine.serviceDays}` },
+          { label: "Red Line trips", value: `${redTrips}/day, weekdays` },
         ]}
       />
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-10">

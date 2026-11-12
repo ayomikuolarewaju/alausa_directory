@@ -1,7 +1,8 @@
-import { getWardById, lcdas } from "@/lib/lcdaData";
+import { getWardById } from "@/lib/data-access";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 
 const BASE_URL = "https://www.alausadirectory.com"; // Also registered: alausadirectory.com.ng — both point to same site
 
@@ -11,16 +12,10 @@ const zoneColors = {
   Suburban: "#1B7A3E",
 };
 
-// Generate all ward IDs for static params
-export async function generateStaticParams() {
-  return lcdas.flatMap(lcda =>
-    lcda.wards.map(ward => ({ id: ward.id }))
-  );
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const result = getWardById(id);
+  const result = await getWardById(id);
   if (!result) return {};
   const { ward, lcda } = result;
   const title = `${ward.name} — ${lcda.name}, ${lcda.parentLgaName}`;
@@ -43,8 +38,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export default async function WardDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
-  const result = getWardById(id);
+  const result = await getWardById(id);
   if (!result) notFound();
 
   const { ward, lcda } = result;

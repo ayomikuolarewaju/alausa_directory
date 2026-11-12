@@ -1,5 +1,5 @@
-import { getLGAById, lgas } from "@/lib/lgaData";
-import { getLCDAsByParentLGA } from "@/lib/lcdaData";
+import { getLGAById, getLCDAsByParentLGA } from "@/lib/data-access";
+import { connection } from "next/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -12,13 +12,10 @@ const zoneColors = {
   Suburban: "#1B7A3E",
 };
 
-export async function generateStaticParams() {
-  return lgas.map(l => ({ id: l.id }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const lga = getLGAById(id);
+  const lga = await getLGAById(id);
   if (!lga) return {};
   const title = `${lga.name} Local Government Area`;
   const description = `${lga.bio.slice(0, 155)}...`;
@@ -33,8 +30,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export default async function LGADetailPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
-  const lga = getLGAById(id);
+  const [lga, lgaLcdas] = await Promise.all([
+    getLGAById(id),
+    getLCDAsByParentLGA(id),
+  ]);
   if (!lga) notFound();
 
   const color = zoneColors[lga.zone];
@@ -281,10 +282,7 @@ export default async function LGADetailPage({ params }: { params: Promise<{ id: 
         </div>
 
         {/* LCDAs with wards */}
-        {(() => {
-          const lgaLcdas = getLCDAsByParentLGA(lga.id);
-          if (lgaLcdas.length === 0) return null;
-          return (
+        {lgaLcdas.length > 0 && (
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-1.5 h-8 rounded-full" style={{ background: color }} />
@@ -337,8 +335,7 @@ export default async function LGADetailPage({ params }: { params: Promise<{ id: 
                 ))}
               </div>
             </div>
-          );
-        })()}
+        )}
 
         {/* Back + navigation */}
         <div className="flex flex-wrap items-center justify-between gap-4 mt-8 pt-6"

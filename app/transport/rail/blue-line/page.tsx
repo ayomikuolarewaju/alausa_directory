@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
 import StationList from "@/components/transport/StationList";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { blueLineData } from "@/lib/transport/blue-line";
-import { serviceNotices } from "@/lib/transport/service-notices";
+import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos Blue Line | Current Stations and Schedule",
@@ -21,8 +21,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlueLinePage() {
-  const d = blueLineData;
+export default async function BlueLinePage() {
+  await connection();
+  const [d, serviceNotices] = await Promise.all([
+    getTransportDataset("blue-line"),
+    getServiceNotices(),
+  ]);
   return (
     <main>
       <TransportHero

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { ferryData } from "@/lib/transport/ferry";
-import { serviceNotices } from "@/lib/transport/service-notices";
+import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos Ferry Services | Routes, Fares & Terminals",
@@ -27,8 +27,12 @@ const statusColors = {
   "Coming Soon":   { bg: "#EFF6FF", text: "#1A3A8F", border: "#1A3A8F" },
 };
 
-export default function FerryPage() {
-  const d = ferryData;
+export default async function FerryPage() {
+  await connection();
+  const [d, serviceNotices] = await Promise.all([
+    getTransportDataset("ferry"),
+    getServiceNotices(),
+  ]);
   return (
     <main>
       <TransportHero

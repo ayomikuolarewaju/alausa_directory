@@ -1,10 +1,13 @@
 import { MetadataRoute } from "next";
-import { entities } from "@/lib/data";
+import { getEntities } from "@/lib/data-access";
+
+export const dynamic = "force-dynamic";
 
 const BASE_URL = "https://www.alausadirectory.com";
 // Also registered: alausadirectory.com.ng — both point to same site
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const entities = await getEntities();
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE_URL}/ministries`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },

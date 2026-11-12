@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import TransportHero from "@/components/transport/Hero";
 import StationList from "@/components/transport/StationList";
 import FareCard from "@/components/transport/FareCard";
-import { redLineData } from "@/lib/transport/red-line";
+import { getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos Red Line | Current Timetable, Stops & Fare",
@@ -20,8 +21,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RedLinePage() {
-  const d = redLineData;
+export default async function RedLinePage() {
+  await connection();
+  const d = await getTransportDataset("red-line");
   return (
     <main>
       <TransportHero

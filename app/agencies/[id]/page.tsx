@@ -1,18 +1,17 @@
-import { getById, entities, getEntityDescription, isRecordStale } from "@/lib/data";
+import { getEntityDescription, isRecordStale } from "@/lib/data";
+import { getEntityById } from "@/lib/data-access";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 
 const BASE_URL = "https://www.alausadirectory.com";
 const COLOR = "#D42B2B";
 
-export async function generateStaticParams() {
-  return entities.filter(e => e.category === "agency").map(e => ({ id: e.id }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const entity = getById(id);
+  const entity = await getEntityById(id);
   if (!entity) return {};
   const title = entity.name;
   const head = entity.officers.find(o => o.name.trim())?.name ?? "";
@@ -47,8 +46,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
-  const entity = getById(id);
+  const entity = await getEntityById(id);
   if (!entity || entity.category !== "agency") notFound();
 
   const hasEmptyOfficers = entity.officers.some(o => !o.name);

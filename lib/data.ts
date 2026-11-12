@@ -1285,8 +1285,12 @@ export const getEntityDescription = (entity: Entity) => {
 };
 
 export const searchEntities = (query: string) => {
+  return searchEntityList(entities, query);
+};
+
+export const searchEntityList = (records: Entity[], query: string) => {
   const q = query.toLowerCase();
-  return entities.filter(
+  return records.filter(
     (e) =>
       e.name.toLowerCase().includes(q) ||
       e.description.toLowerCase().includes(q) ||

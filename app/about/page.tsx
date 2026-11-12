@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getByCategory } from "@/lib/data";
-import { lgas } from "@/lib/lgaData";
+import { getEntities, getLGAs } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "About Alausa Directory | Independent Civic Platform",
@@ -31,11 +31,18 @@ const dataSources = [
   { icon: "🗞️", name: "Press releases published by the relevant ministry or agency" },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  await connection();
+  const [entities, lgas] = await Promise.all([getEntities(), getLGAs()]);
+  const entityCounts = {
+    ministry: entities.filter((entity) => entity.category === "ministry").length,
+    agency: entities.filter((entity) => entity.category === "agency").length,
+    parastatal: entities.filter((entity) => entity.category === "parastatal").length,
+  };
   const stats = [
-    { value: getByCategory("ministry").length, label: "Ministries" },
-    { value: getByCategory("agency").length, label: "Agencies" },
-    { value: getByCategory("parastatal").length, label: "Parastatals" },
+    { value: entityCounts.ministry, label: "Ministries" },
+    { value: entityCounts.agency, label: "Agencies" },
+    { value: entityCounts.parastatal, label: "Parastatals" },
     { value: lgas.length, label: "LGA Profiles" },
     { value: "Free", label: "Always" },
   ];
@@ -91,9 +98,9 @@ export default function AboutPage() {
           <h2 className="font-display font-bold text-xl mb-4">What We Cover</h2>
           <ul className="space-y-3 text-sm text-gray-700">
             {[
-              `${getByCategory("ministry").length} ministry records`,
-              `${getByCategory("agency").length} agency records`,
-              `${getByCategory("parastatal").length} parastatal records`,
+              `${entityCounts.ministry} ministry records`,
+              `${entityCounts.agency} agency records`,
+              `${entityCounts.parastatal} parastatal records`,
               `${lgas.length} Local Government Areas with history, maps and officers`,
               "Step-by-step guides for key government services",
               "Emergency and crisis hotlines for all sectors",

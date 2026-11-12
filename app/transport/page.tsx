@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LineCard from "@/components/transport/LineCard";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { serviceNotices } from "@/lib/transport/service-notices";
+import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos Transport | LAMATA Rail, BRT & Ferry Directory",
@@ -21,61 +22,69 @@ export const metadata: Metadata = {
   },
 };
 
-const modes = [
-  {
-    title: "Rail",
-    icon: "🚊",
-    description: "Blue Line & Red Line metro rail services across Lagos",
-    href: "/transport/rail",
-    color: "#0057A8",
-    stats: "Blue: 5 stops, 102 trips/day (Mon–Sat) · Red: 8 stops, 9 trips/day (Mon–Fri)",
-  },
-  {
-    title: "BRT",
-    icon: "🚌",
-    description: "Bus Rapid Transit corridors — West Africa's largest BRT network",
-    href: "/transport/brt",
-    color: "#E05C00",
-    stats: "5 routes · 200k+ daily passengers",
-  },
-  {
-    title: "Ferry",
-    icon: "⛴️",
-    description: "Waterway ferry services across Lagos Lagoon and harbour",
-    href: "/transport/ferry",
-    color: "#1B7A3E",
-    stats: "8 routes · 12 terminals · 200km waterways",
-  },
-];
-
-const lines = [
-  {
-    name: "Blue Line",
-    description: "Current passenger service runs from Marina to Mile 2 through five operating stations. LAMATA has announced three additional stations for opening by the end of February 2027.",
-    color: "#0057A8",
-    status: "Operational",
-    stats: [
-      { label: "Operating stations", value: "5" },
-      { label: "Trips/day", value: "102" },
-      { label: "Service days", value: "Mon–Sat" },
-    ],
-    href: "/transport/rail/blue-line",
-  },
-  {
-    name: "Red Line",
-    description: "LAMATA's published weekday passenger timetable covers Oyingbo–Agbado. The 37 km Agbado–Marina route is a longer-term corridor plan.",
-    color: "#CC1F1F",
-    status: "Operational",
-    stats: [
-      { label: "Timetabled stops", value: "8" },
-      { label: "Daily trains", value: "9" },
-      { label: "Schedule", value: "Mon–Fri" },
-    ],
-    href: "/transport/rail/red-line",
-  },
-];
-
-export default function TransportPage() {
+export default async function TransportPage() {
+  await connection();
+  const [blueLine, redLine, brt, ferry, serviceNotices] = await Promise.all([
+    getTransportDataset("blue-line"),
+    getTransportDataset("red-line"),
+    getTransportDataset("brt"),
+    getTransportDataset("ferry"),
+    getServiceNotices(),
+  ]);
+  const blueTrips = blueLine.schedules.reduce((total, schedule) => total + schedule.tripsPerDay, 0);
+  const redTrips = redLine.schedules.reduce((total, schedule) => total + schedule.trains.length, 0);
+  const modes = [
+    {
+      title: "Rail",
+      icon: "🚊",
+      description: "Blue Line & Red Line metro rail services across Lagos",
+      href: "/transport/rail",
+      color: "#0057A8",
+      stats: `Blue: ${blueLine.stations.length} stops, ${blueTrips} trips/day (${blueLine.serviceDays}) · Red: ${redLine.stations.length} stops, ${redTrips} trips/day`,
+    },
+    {
+      title: "BRT",
+      icon: "🚌",
+      description: "Bus Rapid Transit corridors — West Africa's largest BRT network",
+      href: "/transport/brt",
+      color: "#E05C00",
+      stats: `${brt.routes.length} routes · ${brt.overview.find((item) => item.label === "Daily Passengers")?.value ?? "Passenger service"}`,
+    },
+    {
+      title: "Ferry",
+      icon: "⛴️",
+      description: "Waterway ferry services across Lagos Lagoon and harbour",
+      href: "/transport/ferry",
+      color: "#1B7A3E",
+      stats: `${ferry.routes.length} routes · ${ferry.terminals.length} terminals`,
+    },
+  ];
+  const lines = [
+    {
+      name: blueLine.name,
+      description: blueLine.description,
+      color: blueLine.color,
+      status: blueLine.status,
+      stats: [
+        { label: "Operating stations", value: String(blueLine.stations.length) },
+        { label: "Trips/day", value: String(blueTrips) },
+        { label: "Service days", value: blueLine.serviceDays },
+      ],
+      href: "/transport/rail/blue-line",
+    },
+    {
+      name: redLine.name,
+      description: redLine.description,
+      color: redLine.color,
+      status: "Operational",
+      stats: [
+        { label: "Timetabled stops", value: String(redLine.stations.length) },
+        { label: "Daily trains", value: String(redTrips) },
+        { label: "Service days", value: "Weekdays" },
+      ],
+      href: "/transport/rail/red-line",
+    },
+  ];
   return (
     <main>
       {/* Hero */}

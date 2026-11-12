@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { lgas } from "@/lib/lgaData";
-import { lcdas as lcdaList } from "@/lib/lcdaData";
+import { getLCDAs, getLGAs } from "@/lib/data-access";
+import { connection } from "next/server";
 
 export const metadata: Metadata = {
   title: "Lagos State LGA Directory | All 20 Local Government Areas & 37 LCDAs",
@@ -30,9 +30,11 @@ const zoneColors = {
 
 const zones = ["Island", "Mainland", "Suburban"] as const;
 
-const totalLCDAs = lgas.reduce((sum, lga) => sum + lga.localCouncilDevelopmentAreas.length, 0);
-
-export default function LGAsPage() {
+export default async function LGAsPage() {
+  await connection();
+  const [lgas, lcdaList] = await Promise.all([getLGAs(), getLCDAs()]);
+  const totalLCDAs = lcdaList.length;
+  const totalWards = lcdaList.reduce((sum, lcda) => sum + lcda.wards.length, 0);
   return (
     <main className="max-w-7xl mx-auto px-4 py-12">
 
@@ -53,7 +55,7 @@ export default function LGAsPage() {
         {[
           { label: "LGAs", value: 20, color: "#1A3A8F" },
           { label: "LCDAs", value: totalLCDAs, color: "#D42B2B" },
-          { label: "Total Wards", value: lgas.reduce((s, l) => s + l.wards, 0), color: "#1B7A3E" },
+          { label: "Total Wards", value: totalWards, color: "#1B7A3E" },
         ].map(s => (
           <div key={s.label} className="text-center py-5 rounded-xl"
             style={{ background: s.color, border: "2px solid #0D0D0D", boxShadow: "4px 4px 0 #0D0D0D" }}>
