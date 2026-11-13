@@ -307,8 +307,29 @@ export async function getTransportDataset<K extends TransportDataKey>(
     .eq("id", id)
     .single();
   if (error) throwDatabaseError(`${id} transport query`, error);
-  return parseTransportDataset(id, data.data);
+
+  try {
+    return parseTransportDataset(id, data.data);
+  } catch (e) {
+    console.error(`[transport] ${id} DB row is out of date, using local data:`, e);
+    return transportDefaults[id];
+  }
 }
+
+// export async function getTransportDataset<K extends TransportDataKey>(
+//   id: K,
+// ): Promise<(typeof transportDefaults)[K]> {
+//   if (!isSupabaseConfigured()) return transportDefaults[id];
+
+//   const supabase = createPublicSupabaseClient();
+//   const { data, error } = await supabase
+//     .from("transport_datasets")
+//     .select("data")
+//     .eq("id", id)
+//     .single();
+//   if (error) throwDatabaseError(`${id} transport query`, error);
+//   return parseTransportDataset(id, data.data);
+// }
 
 function mapServiceNotice(row: ServiceNoticeRow): ServiceNotice {
   return {
