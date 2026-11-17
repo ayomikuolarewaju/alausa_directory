@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -52,13 +53,17 @@ export default function ContactPage() {
           {[
             { icon: "🏛️", title: "Lagos State Government", body: "Secretariat, Alausa, Ikeja, Lagos State, Nigeria" },
             { icon: "📞", title: "General Enquiries", body: "+234-8111133427" },
-            { icon: "✉️", title: "Email", body: "alausadirectory@gmail.com" },
+            { icon: "✉️", title: "Email", body: CONTACT_EMAIL },
             { icon: "🕐", title: "Office Hours", body: "Monday – Friday\n8:00 AM – 4:00 PM" },
           ].map((item) => (
             <div key={item.title} className="p-4 rounded-xl" style={{ background: "#fff", border: "2px solid #0D0D0D" }}>
               <div className="text-2xl mb-2">{item.icon}</div>
               <p className="font-semibold text-sm">{item.title}</p>
-              <p className="text-gray-500 text-sm whitespace-pre-line">{item.body}</p>
+              {item.title === "Email" ? (
+                <a href={`mailto:${item.body}`} className="text-gray-500 text-sm hover:underline">{item.body}</a>
+              ) : (
+                <p className="text-gray-500 text-sm whitespace-pre-line">{item.body}</p>
+              )}
             </div>
           ))}
         </div>

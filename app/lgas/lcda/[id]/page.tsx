@@ -75,10 +75,21 @@ export default async function LCDADetailPage({ params }: { params: Promise<{ id:
       url: `${BASE_URL}/lgas/${lcda.parentLgaId}`,
     },
   };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "LGAs", item: `${BASE_URL}/lgas` },
+      { "@type": "ListItem", position: 3, name: lcda.parentLgaName, item: `${BASE_URL}/lgas/${lcda.parentLgaId}` },
+      { "@type": "ListItem", position: 4, name: lcda.name, item: `${BASE_URL}/lgas/lcda/${lcda.id}` },
+    ],
+  };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }} />
       <main className="max-w-5xl mx-auto px-4 py-12">
 
         {/* Breadcrumb */}

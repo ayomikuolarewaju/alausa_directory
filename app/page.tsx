@@ -168,7 +168,7 @@ export default async function Home({
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs uppercase tracking-widest mb-2 font-semibold">Resources</p>
-                  {["/news", "/services", "/emergency", "/events", "/transport"].map(href => (
+                  {["/news", "/services", "/emergency", "/events", "/transport", "/guides"].map(href => (
                     <Link key={href} href={href} className="block text-gray-400 hover:text-white capitalize py-0.5">{href.replace("/", "")}</Link>
                   ))}
                 </div>

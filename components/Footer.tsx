@@ -18,7 +18,7 @@ function Footer() {
         </Link>
           
           <div className="flex gap-4 text-sm">
-            {["/ministries", "/agencies", "/parastatals", "/methodology", "/changelog", "/contact"].map((href) => (
+            {["/ministries", "/agencies", "/parastatals", "/guides", "/methodology", "/changelog", "/contact"].map((href) => (
               <Link key={href} href={href} className="text-gray-400 hover:text-white capitalize">
                 {href.replace("/", "")}
               </Link>

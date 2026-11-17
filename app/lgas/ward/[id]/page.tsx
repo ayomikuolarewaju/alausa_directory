@@ -82,10 +82,22 @@ export default async function WardDetailPage({ params }: { params: Promise<{ id:
       addressCountry: "NG",
     },
   };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "LGAs", item: `${BASE_URL}/lgas` },
+      { "@type": "ListItem", position: 3, name: lcda.parentLgaName, item: `${BASE_URL}/lgas/${lcda.parentLgaId}` },
+      { "@type": "ListItem", position: 4, name: lcda.name, item: `${BASE_URL}/lgas/lcda/${lcda.id}` },
+      { "@type": "ListItem", position: 5, name: ward.name, item: `${BASE_URL}/lgas/ward/${ward.id}` },
+    ],
+  };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }} />
       <main className="max-w-4xl mx-auto px-4 py-12">
 
         {/* Breadcrumb */}

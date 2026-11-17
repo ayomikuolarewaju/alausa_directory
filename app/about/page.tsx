@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getEntities, getLGAs } from "@/lib/data-access";
 import { connection } from "next/server";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Alausa Directory | Independent Civic Platform",
@@ -185,6 +186,10 @@ export default async function AboutPage() {
           style={{ background: "#fff", color: "#0D0D0D", border: "2px solid #0D0D0D" }}>
           Privacy Policy
         </Link>
+        <a href={`mailto:${CONTACT_EMAIL}`} className="px-5 py-2.5 rounded-lg font-semibold text-sm"
+          style={{ background: "#fff", color: "#0D0D0D", border: "2px solid #0D0D0D" }}>
+          {CONTACT_EMAIL}
+        </a>
       </div>
 
     </main>
