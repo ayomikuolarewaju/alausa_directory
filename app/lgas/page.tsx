@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getLCDAs, getLGAs } from "@/lib/data-access";
 import { connection } from "next/server";
+import LgaGuide from "@/components/editorial/LgaGuide";
 
 export const metadata: Metadata = {
   title: "Lagos State LGA Directory | All 20 Local Government Areas & 37 LCDAs",
@@ -242,6 +243,7 @@ export default async function LGAsPage() {
         </p>
       </div>
 
+      <LgaGuide />
     </main>
   );
 }

@@ -3,6 +3,7 @@ import TransportHero from "@/components/transport/Hero";
 import ServiceNotice from "@/components/transport/ServiceNotice";
 import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
 import { connection } from "next/server";
+import BrtGuide from "@/components/editorial/BrtGuide";
 
 export const metadata: Metadata = {
   title: "Lagos BRT | Routes, Fares & Terminals",
@@ -209,6 +210,7 @@ export default async function BRTPage() {
           </div>
         </div>
 
+        <BrtGuide />
       </div>
     </main>
   );

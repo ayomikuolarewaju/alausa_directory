@@ -8,6 +8,7 @@ import { ferryData } from "../lib/transport/ferry";
 import { blueLineData } from "../lib/transport/blue-line";
 import { redLineData } from "../lib/transport/red-line";
 import { serviceNotices } from "../lib/transport/service-notices";
+import { defaultEditorialSections } from "../lib/editorial/defaults";
 
 type Row = Record<string, unknown>;
 
@@ -18,6 +19,7 @@ const jsonColumns = new Set([
   "known_for",
   "local_council_development_areas",
   "data",
+  "content",
 ]);
 const dateColumns = new Set(["last_updated", "last_reviewed_at", "checked_at"]);
 
@@ -48,6 +50,7 @@ function upsert(
   columns: string[],
   conflictColumns: string[],
   rows: Row[],
+  insertIfMissing = false,
 ): string {
   if (rows.length === 0) return "";
   const values = rows
@@ -58,9 +61,17 @@ function upsert(
     .map((column) => `    ${column} = EXCLUDED.${column}`)
     .join(",\n");
   const updatedAt =
-    table === "entities" || table === "transport_datasets"
+    table === "entities" || table === "transport_datasets" || table === "editorial_sections"
       ? ",\n    updated_at = now()"
       : "";
+
+  if (insertIfMissing) {
+    return [
+      `INSERT INTO public.${table} (${columns.join(", ")})`,
+      `VALUES\n${values}`,
+      `ON CONFLICT (${conflictColumns.join(", ")}) DO NOTHING;`,
+    ].join("\n");
+  }
 
   return [
     `INSERT INTO public.${table} (${columns.join(", ")})`,
@@ -192,6 +203,15 @@ const noticeRows = serviceNotices.map((notice) => ({
   source_label: notice.sourceLabel,
 }));
 
+const editorialRows = defaultEditorialSections.map((section) => ({
+  id: section.id,
+  page_key: section.page_key,
+  title: section.title,
+  content: section.content,
+  sort_order: section.sort_order,
+  published: section.published,
+}));
+
 const statements = [
   upsert(
     "entities",
@@ -253,6 +273,7 @@ const statements = [
     ["id", "data"],
     ["id"],
     transportRows,
+    true,
   ),
   upsert(
     "service_notices",
@@ -263,11 +284,19 @@ const statements = [
     ["id"],
     noticeRows,
   ),
+  upsert(
+    "editorial_sections",
+    ["id", "page_key", "title", "content", "sort_order", "published"],
+    ["id"],
+    editorialRows,
+    true,
+  ),
 ];
 
 const sql = [
   "-- Generated from the current structured datasets in lib/.",
   "-- Safe to re-run: rows are inserted or updated without deleting existing rows.",
+  "-- Transport datasets and editorial sections are inserted only when missing, preserving admin edits.",
   "-- admin_allowlist is intentionally excluded; it requires real auth.users UUIDs.",
   "BEGIN;",
   ...statements,
@@ -282,7 +311,8 @@ async function main() {
   console.log(
     `Included ${entities.length} entities, ${entityOfficerRows.length} entity officers, ` +
     `${sourceRows.length} sources, ${lgas.length} LGAs, ${lcdas.length} LCDAs, ` +
-    `${wardRows.length} wards, 4 transport datasets, and ${noticeRows.length} service notices.`,
+    `${wardRows.length} wards, 4 transport datasets, ${noticeRows.length} service notices, ` +
+    `and ${editorialRows.length} editorial sections.`,
   );
 }
 

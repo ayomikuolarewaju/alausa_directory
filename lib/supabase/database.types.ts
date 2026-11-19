@@ -120,6 +120,16 @@ export type TransportDatasetRow = {
   updated_at: string;
 };
 
+export type EditorialSectionRow = {
+  id: string;
+  page_key: string;
+  title: string;
+  content: Json;
+  sort_order: number;
+  published: boolean;
+  updated_at: string;
+};
+
 export type ServiceNoticeRow = {
   id: string;
   type: "info" | "warning" | "disruption" | "success";
@@ -143,6 +153,7 @@ export interface Database {
       lcdas: Table<LcdaRow>;
       wards: Table<WardRow>;
       transport_datasets: Table<TransportDatasetRow>;
+      editorial_sections: Table<EditorialSectionRow>;
       service_notices: Table<ServiceNoticeRow>;
       admin_allowlist: Table<{ user_id: string; created_at: string }>;
     };

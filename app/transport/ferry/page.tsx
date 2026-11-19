@@ -3,6 +3,7 @@ import TransportHero from "@/components/transport/Hero";
 import ServiceNotice from "@/components/transport/ServiceNotice";
 import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
 import { connection } from "next/server";
+import FerryGuide from "@/components/editorial/FerryGuide";
 
 export const metadata: Metadata = {
   title: "Lagos Ferry Services | Routes, Fares & Terminals",
@@ -209,6 +210,7 @@ export default async function FerryPage() {
           </div>
         </div>
 
+        <FerryGuide />
       </div>
     </main>
   );

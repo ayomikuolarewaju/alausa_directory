@@ -8,6 +8,7 @@ import type { Entity, EntitySource, Officer } from "@/lib/data";
 import type { LCDA, Ward } from "@/lib/lcdaData";
 import type { LGA, LGAOfficer } from "@/lib/lgaData";
 import type { ServiceNotice } from "@/lib/transport/service-notices";
+import { EDITORIAL_PAGE_KEYS, type EditorialSectionInput } from "@/lib/editorial/types";
 import { parseTransportDataset } from "@/lib/data-access";
 import { requireAdmin } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -125,6 +126,23 @@ const transportSchema = z.object({
   id: z.enum(["blue-line", "red-line", "brt", "ferry"]),
   data: z.unknown(),
 }).strict();
+const editorialBlockSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("heading"),
+    level: z.union([z.literal(3), z.literal(4)]),
+    text: z.string().min(1),
+  }).strict(),
+  z.object({ type: z.literal("paragraph"), text: z.string() }).strict(),
+  z.object({ type: z.literal("list"), items: z.array(z.string()) }).strict(),
+]);
+const editorialSectionSchema: z.ZodType<EditorialSectionInput> = z.object({
+  id: z.string().min(1).regex(/^[a-z0-9-]+$/),
+  page_key: z.enum(EDITORIAL_PAGE_KEYS),
+  title: z.string().min(1),
+  content: z.array(editorialBlockSchema),
+  sort_order: z.number().int(),
+  published: z.boolean(),
+}).strict();
 
 function validationError(error: z.ZodError): ActionResult {
   return { ok: false, error: error.issues.map((issue) => issue.message).join(" ") };
@@ -161,6 +179,76 @@ function revalidateTransport(id?: string) {
   const paths = ["/transport", "/transport/rail", "/transport/rail/blue-line", "/transport/rail/red-line", "/transport/brt", "/transport/ferry"];
   for (const path of paths) revalidatePath(path);
   if (id) revalidatePath(`/transport/${id}`);
+}
+
+function revalidateEditorial(pageKey: string) {
+  const paths: Record<string, string> = {
+    home: "/",
+    lgas: "/lgas",
+    brt: "/transport/brt",
+    ferry: "/transport/ferry",
+    transport: "/transport",
+    "min-science": "/ministries/min-science",
+  };
+  revalidatePath(paths[pageKey] ?? "/");
+  revalidatePath("/admin");
+}
+
+async function saveEditorialSection(
+  input: unknown,
+  mode: "create" | "update",
+): Promise<ActionResult> {
+  const parsed = editorialSectionSchema.safeParse(input);
+  if (!parsed.success) return validationError(parsed.error);
+  const section = parsed.data;
+  const supabase = await requireAdmin();
+  const { data: existing, error: lookupError } = await supabase
+    .from("editorial_sections")
+    .select("id")
+    .eq("id", section.id)
+    .maybeSingle();
+  if (lookupError) return { ok: false, error: lookupError.message };
+  if (mode === "create" && existing) {
+    return { ok: false, error: "An editorial section with this ID already exists." };
+  }
+  if (mode === "update" && !existing) {
+    return { ok: false, error: "Editorial section not found." };
+  }
+
+  const { error } = await supabase.from("editorial_sections").upsert({
+    ...section,
+    content: JSON.parse(JSON.stringify(section.content)),
+    updated_at: new Date().toISOString(),
+  });
+  if (error) return { ok: false, error: error.message };
+  revalidateEditorial(section.page_key);
+  return { ok: true };
+}
+
+export async function createEditorialSection(input: unknown): Promise<ActionResult> {
+  return saveEditorialSection(input, "create");
+}
+
+export async function updateEditorialSection(input: unknown): Promise<ActionResult> {
+  return saveEditorialSection(input, "update");
+}
+
+export async function deleteEditorialSection(id: string): Promise<ActionResult> {
+  if (!/^[a-z0-9-]+$/.test(id)) {
+    return { ok: false, error: "Invalid editorial section ID." };
+  }
+  const supabase = await requireAdmin();
+  const { data: existing, error: lookupError } = await supabase
+    .from("editorial_sections")
+    .select("page_key")
+    .eq("id", id)
+    .maybeSingle();
+  if (lookupError) return { ok: false, error: lookupError.message };
+  if (!existing) return { ok: false, error: "Editorial section not found." };
+  const { error } = await supabase.from("editorial_sections").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateEditorial(existing.page_key);
+  return { ok: true };
 }
 
 async function saveEntity(input: unknown, mode: "create" | "update"): Promise<ActionResult> {

@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 1. Create a Supabase project and copy its project URL and publishable key.
 2. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
-3. Apply `supabase/migrations/20261112140700_initial_directory_schema.sql` in the Supabase SQL Editor.
+3. Apply all SQL files in `supabase/migrations/` in filename order in the Supabase SQL Editor. This creates the directory, transport and editable editorial-content tables.
 4. Create an administrator account in Supabase Auth, then add its user UUID to `public.admin_allowlist`:
 
    ```sql
@@ -47,7 +47,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
    values ('YOUR_AUTH_USER_UUID');
    ```
 
-5. To seed from the Supabase SQL Editor, run `supabase/seed.sql`. It upserts all structured directory records from `lib/` and can be run again without deleting records. Regenerate it after changing source data:
+5. To seed from the Supabase SQL Editor, run `supabase/seed.sql`. It upserts the directory records and inserts transport datasets and initial editorial sections only when missing, preserving later administrator edits. Regenerate it after changing source data:
 
    ```bash
    npm run db:export-sql
@@ -55,8 +55,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
    Alternatively, add the service-role key to `.env.local` as `SUPABASE_SERVICE_ROLE_KEY` and run `npm run db:seed`. Do not expose the service-role key to client-side code or commit `.env.local`.
 
-The seed does not populate `admin_allowlist`: add each administrator's real Supabase Auth user UUID separately after creating that Auth user.
+The seed does not populate `admin_allowlist`: add each administrator's real Supabase Auth user UUID separately after creating that Auth user. Editorial sections and transport datasets can be edited in the authenticated `/admin` dashboard. New editorial sections use a page key already rendered by the site (`home`, `lgas`, `brt`, `ferry`, `transport`, or `min-science`).
 
 Without Supabase URL/key configuration, public pages use the bundled `lib/` data. Once configured, page reads use Supabase and report query/schema errors instead of silently falling back. Admin writes require a verified Supabase session, membership in `admin_allowlist`, and database RLS authorization.
 
-The admin sign-in and dashboard are available at `/admin/login` and `/admin`. CRUD Server Actions are implemented in `app/actions.ts`; a record-editing interface is not included yet.
+The admin sign-in and dashboard are available at `/admin/login` and `/admin`.

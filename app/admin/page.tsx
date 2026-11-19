@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { signOutAdmin } from "@/app/actions";
+import ContentEditors from "@/components/admin/ContentEditors";
 import { getDirectorySummary } from "@/lib/data-access";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -23,7 +24,13 @@ export default async function AdminPage() {
   if (adminError) throw new Error(`Could not verify admin access: ${adminError.message}`);
   if (!isAdmin) redirect("/admin/login");
 
-  const summary = await getDirectorySummary();
+  const [summary, editorialResult, transportResult] = await Promise.all([
+    getDirectorySummary(),
+    supabase.from("editorial_sections").select("*").order("page_key").order("sort_order"),
+    supabase.from("transport_datasets").select("*").order("id"),
+  ]);
+  if (editorialResult.error) throw new Error(`Could not load editorial sections: ${editorialResult.error.message}`);
+  if (transportResult.error) throw new Error(`Could not load transport datasets: ${transportResult.error.message}`);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-12">
@@ -54,15 +61,10 @@ export default async function AdminPage() {
         ))}
       </section>
 
-      <section className="rounded-xl bg-white p-6" style={{ border: "2px solid #0D0D0D" }}>
-        <h2 className="font-display text-xl font-bold mb-2">Database content</h2>
-        <p className="text-sm leading-relaxed text-gray-600">
-          CRUD Server Actions are available for entities, LGAs, LCDAs, transport datasets, and service notices. Writes require an allowlisted administrator and are also restricted by database row-level security.
-        </p>
-        <p className="text-sm leading-relaxed text-gray-600 mt-3">
-          A record-editing interface is not included yet. Public pages remain read-only; administrator tools can call the Server Actions directly.
-        </p>
-      </section>
+      <ContentEditors
+        editorialSections={editorialResult.data}
+        transportDatasets={transportResult.data}
+      />
     </main>
   );
 }

@@ -8,6 +8,7 @@ import { ferryData } from "../lib/transport/ferry";
 import { blueLineData } from "../lib/transport/blue-line";
 import { redLineData } from "../lib/transport/red-line";
 import { serviceNotices } from "../lib/transport/service-notices";
+import { defaultEditorialSections } from "../lib/editorial/defaults";
 import type { Database } from "../lib/supabase/database.types";
 import {
   serializeEntity,
@@ -58,7 +59,7 @@ async function seed() {
       id: dataset.id,
       data: dataset.data,
       updated_at: new Date().toISOString(),
-    });
+    }, { ignoreDuplicates: true });
     if (error) {
       throw new Error(`Could not seed transport data ${dataset.id}: ${error.message}`);
     }
@@ -69,8 +70,17 @@ async function seed() {
     .upsert(serviceNotices.map(serializeServiceNotice));
   if (noticesError) throw new Error(`Could not seed service notices: ${noticesError.message}`);
 
+  const { error: editorialError } = await supabase
+    .from("editorial_sections")
+    .upsert(defaultEditorialSections.map((section) => ({
+      ...section,
+      content: JSON.parse(JSON.stringify(section.content)),
+      updated_at: new Date().toISOString(),
+    })), { ignoreDuplicates: true });
+  if (editorialError) throw new Error(`Could not seed editorial sections: ${editorialError.message}`);
+
   console.log(
-    `Seeded ${entities.length} entities, ${lgas.length} LGAs, ${lcdas.length} LCDAs, 4 transport datasets, and ${serviceNotices.length} notices.`,
+    `Seeded ${entities.length} entities, ${lgas.length} LGAs, ${lcdas.length} LCDAs, 4 transport datasets, ${serviceNotices.length} notices, and ${defaultEditorialSections.length} editorial sections.`,
   );
 }
 

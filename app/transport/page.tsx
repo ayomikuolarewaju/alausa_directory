@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LineCard from "@/components/transport/LineCard";
 import ServiceNotice from "@/components/transport/ServiceNotice";
-import { getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import { getEditorialSections, getServiceNotices, getTransportDataset } from "@/lib/data-access";
+import EditorialContent from "@/components/editorial/EditorialContent";
 import { connection } from "next/server";
 
 export const metadata: Metadata = {
@@ -24,12 +25,13 @@ export const metadata: Metadata = {
 
 export default async function TransportPage() {
   await connection();
-  const [blueLine, redLine, brt, ferry, serviceNotices] = await Promise.all([
+  const [blueLine, redLine, brt, ferry, serviceNotices, editorialSections] = await Promise.all([
     getTransportDataset("blue-line"),
     getTransportDataset("red-line"),
     getTransportDataset("brt"),
     getTransportDataset("ferry"),
     getServiceNotices(),
+    getEditorialSections("transport"),
   ]);
   const blueTrips = blueLine.schedules.reduce((total, schedule) => total + schedule.tripsPerDay, 0);
   const redTrips = redLine.schedules.reduce((total, schedule) => total + schedule.trains.length, 0);
@@ -178,6 +180,7 @@ export default async function TransportPage() {
           </div>
         </section>
 
+        <EditorialContent pageKey="transport" sections={editorialSections} />
       </div>
     </main>
   );

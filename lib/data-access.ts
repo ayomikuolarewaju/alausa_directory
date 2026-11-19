@@ -10,6 +10,8 @@ import { redLineData } from "./transport/red-line";
 import { serviceNotices as localServiceNotices, type ServiceNotice } from "./transport/service-notices";
 import { createPublicSupabaseClient } from "./supabase/public";
 import { isSupabaseConfigured } from "./supabase/config";
+import { defaultEditorialSections } from "./editorial/defaults";
+import type { EditorialBlock, EditorialSection } from "./editorial/types";
 import type {
   EntityOfficerRow,
   EntityRow,
@@ -355,6 +357,52 @@ export async function getServiceNotices(): Promise<ServiceNotice[]> {
     .order("date", { ascending: false });
   if (error) throwDatabaseError("service notice query", error);
   return data.map(mapServiceNotice);
+}
+
+function parseEditorialContent(value: Json, sectionId: string): EditorialBlock[] {
+  const parsed = z.array(
+    z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("heading"),
+        level: z.union([z.literal(3), z.literal(4)]),
+        text: z.string(),
+      }).strict(),
+      z.object({ type: z.literal("paragraph"), text: z.string() }).strict(),
+      z.object({ type: z.literal("list"), items: z.array(z.string()) }).strict(),
+    ]),
+  ).safeParse(value);
+  if (!parsed.success) {
+    throw new Error(`Supabase returned invalid editorial content for "${sectionId}".`);
+  }
+  return parsed.data;
+}
+
+export async function getEditorialSections(pageKey: string): Promise<EditorialSection[]> {
+  if (!isSupabaseConfigured()) {
+    return defaultEditorialSections
+      .filter((section) => section.page_key === pageKey && section.published)
+      .sort((a, b) => a.sort_order - b.sort_order);
+  }
+
+  const supabase = createPublicSupabaseClient();
+  const { data, error } = await supabase
+    .from("editorial_sections")
+    .select("*")
+    .eq("page_key", pageKey)
+    .eq("published", true)
+    .order("sort_order")
+    .order("id");
+  if (error) throwDatabaseError("editorial section query", error);
+
+  return data.map((row): EditorialSection => ({
+    id: row.id,
+    page_key: row.page_key,
+    title: row.title,
+    content: parseEditorialContent(row.content, row.id),
+    sort_order: row.sort_order,
+    published: row.published,
+    updated_at: row.updated_at,
+  }));
 }
 
 export async function getDirectorySummary() {

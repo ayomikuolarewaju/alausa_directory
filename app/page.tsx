@@ -5,6 +5,7 @@ import EntityCard from "@/components/EntityCard";
 import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
 import type { Metadata } from "next";
+import HomeAbout from "@/components/editorial/HomeAbout";
 
 const BASE_URL = "https://www.alausadirectory.com";
 
@@ -150,6 +151,8 @@ export default async function Home({
             })}
           </>
         )}
+
+        <HomeAbout />
 
         {/* Footer */}
         <footer style={{ background: "#0D0D0D", borderTop: "4px solid #F5C518" }}>

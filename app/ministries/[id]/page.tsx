@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import MinistryScienceExplainer from "@/components/editorial/MinistryScienceExplainer";
 
 const BASE_URL = "https://www.alausadirectory.com";
 const COLOR = "#1A3A8F";
@@ -242,6 +243,7 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
             </ul>
           </section>
         )}
+      {id === "min-science" && <MinistryScienceExplainer />}
       </main>
     </>
   );
